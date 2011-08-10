@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Administrator</author>
+      <authoring_tool>OpenCOLLADA for 3ds Max;  Version: 1.3.0;  Revision: 788M;  Platform: Win32;  Configuration: Release_Max2010_static</authoring_tool>
+      <source_data>file:///D:/clientes/samsung/Garage/3D/pruebas3D/auto_basico2_collada_grande_maspoligonos.max</source_data>
+    </contributor>
+    <created>2011-08-02T13:41:24</created>
+    <modified>2011-08-02T13:41:24</modified>
+    <unit name="inch" meter="0.0254"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="spoiler2">
+      <profile_COMMON>
+        <newparam sid="spoiler2_jpg-surface">
+          <surface type="2D">
+            <init_from>spoiler2_jpg</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="spoiler2_jpg-sampler">
+          <sampler2D>
+            <source>spoiler2_jpg-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <blinn>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.5882353 0.5882353 0.5882353 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="spoiler2_jpg-sampler" texcoord="CHANNEL3"/>
+            </diffuse>
+            <specular>
+              <color>0.9 0.9 0.9 1</color>
+            </specular>
+            <shininess>
+              <float>9.999999</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <transparent opaque="A_ONE">
+              <color>1 1 1 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+          </blinn>
+        </technique>
+      </profile_COMMON>
+      <extra>
+        <technique profile="OpenCOLLADA3dsMax">
+          <extended_shader>
+            <apply_reflection_dimming>0</apply_reflection_dimming>
+            <dim_level>0</dim_level>
+            <falloff_type>0</falloff_type>
+            <index_of_refraction>1.5</index_of_refraction>
+            <opacity_type>0</opacity_type>
+            <reflection_level>3</reflection_level>
+            <wire_size>1</wire_size>
+            <wire_units>0</wire_units>
+          </extended_shader>
+          <shader>
+            <ambient_diffuse_lock>1</ambient_diffuse_lock>
+            <ambient_diffuse_texture_lock>1</ambient_diffuse_texture_lock>
+            <diffuse_specular_lock>0</diffuse_specular_lock>
+            <soften>0.1</soften>
+            <use_self_illum_color>0</use_self_illum_color>
+          </shader>
+        </technique>
+      </extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="spoiler2-material" name="spoiler2">
+      <instance_effect url="#spoiler2"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="geom-spoiler2" name="spoiler2">
+      <mesh>
+        <source id="geom-spoiler2-positions">
+          <float_array id="geom-spoiler2-positions-array" count="156">-8.651247 -50.36892 3.12648e-14 -4.754261 -50.36892 0 0.6909666 -50.36892 0 7.698816 -50.36892 4.054306 -8.651247 -34.38581 0 -4.728171 -34.05631 0 0.6648777 -34.05631 0 7.698816 -34.38581 4.054306 -8.651247 0 0 -4.728171 -6.85384e-9 0 0.6648777 -6.85384e-9 0 7.698816 -1.77219e-7 4.054306 -8.651247 34.38581 0 -4.728171 34.05631 0 0.6648777 34.05631 0 7.698816 34.38581 4.054306 -8.651247 50.36892 3.12648e-14 -4.754261 50.36892 0 0.6909666 50.36892 0 7.698816 50.36892 4.054305 -10.51177 -50.36892 8.342678 -4.754261 -50.36892 7.746089 0.6909666 -50.36892 8.342678 5.513239 -50.36892 12.39698 -10.51177 -34.38581 8.342678 -4.754261 -34.38581 7.74609 0.6909666 -34.38581 8.342678 5.513239 -34.38581 12.39698 -10.51177 0 8.342678 -4.754261 2.60777e-8 7.74609 0.6909666 0 8.342678 5.513239 -1.77219e-7 12.39698 -10.51177 34.38581 8.342678 -4.754261 34.38581 7.74609 0.6909666 34.38581 8.342678 5.513239 34.3858 12.39698 -10.51177 50.36892 8.342678 -4.754261 50.36892 7.74609 0.6909666 50.36892 8.342678 5.513239 50.36892 12.39698 -6.715746 -46.57289 -7.145463 -4.754261 -46.57289 -7.145464 -3.105061 -46.57289 -7.145464 -6.715746 -39.56874 -7.145464 -4.754261 -39.56874 -7.145463 -3.105061 -39.56874 -7.145463 -6.715746 39.56874 -7.145464 -4.754261 39.56874 -7.145464 -3.105061 39.56874 -7.145465 -6.715746 46.57289 -7.145463 -4.754261 46.57289 -7.145464 -3.105061 46.57289 -7.145464</float_array>
+          <technique_common>
+            <accessor source="#geom-spoiler2-positions-array" count="52" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="geom-spoiler2-map1">
+          <float_array id="geom-spoiler2-map1-array" count="150">0 0 0 0.25 0 0 0.5 0 0 0.75 0 0 1 0 0 0 1 0 0.25 1 0 0.5 1 0 0.75 1 0 1 1 0 0 0 0 0.3333333 0 0 0.6666667 0 0 1 0 0 0 1 0 0.3333333 1 0 0.6666667 1 0 1 1 0 0 0 0 0.3333333 0 0 0.6666667 0 0 1 0 0 0 0.25 0 0.3333333 0.25 0 0.6666667 0.25 0 1 0.25 0 0 0.5 0 0.3333333 0.5 0 0.6666667 0.5 0 1 0.5 0 0 0.75 0 0.3333333 0.75 0 0.6666667 0.75 0 1 0.75 0 0 1 0 0.3333333 1 0 0.6666667 1 0 1 1 0 1 0 0 1 0.25 0 0.6666667 0.25 0 0.6666667 0 0 0.3333333 0.25 0 0.3333333 0 0 1 0.75 0 0.6666667 0.75 0 1 1 0 0.6666667 1 0 0.3333333 0.75 0 0.3333333 1 0</float_array>
+          <technique_common>
+            <accessor source="#geom-spoiler2-map1-array" count="50" stride="3">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+              <param name="P" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="geom-spoiler2-map3">
+          <float_array id="geom-spoiler2-map3-array" count="372">0.6063439 0.1277692 0 0.6141365 0.1610896 0 0.547905 0.1765789 0 0.5312911 0.1285434 0 0.02 0.9067428 0 0.02 0.4763235 0 0.1632413 0.4760944 0 0.02 0.7818488 0 0.1603479 0.9067428 0 0.1603479 0.5378596 0 0.02 0.5378596 0 0.1603479 0.7818488 0 0.1603479 0.98 0 0.1603479 0.3942894 0 0.4622904 0.3942894 0 0.1603479 0.8551061 0 0.4909308 0.1277658 0 0.5114574 0.1958302 0 0.4401559 0.1790161 0 0.4152244 0.1296309 0 0.6250249 0.207648 0 0.5536925 0.2243303 0 0.6043724 0.2756744 0 0.5286696 0.2736693 0 0.02 0.98 0 0.9045807 0.5894963 0 0.9045807 0.6400531 0 0.02 0.8551061 0 0.4622904 0.9067428 0 0.7642328 0.6400531 0 0.7642328 0.5894963 0 0.4622904 0.7818488 0 0.4622904 0.98 0 0.9045807 0.6878676 0 0.7642328 0.6878676 0 0.4622904 0.8551061 0 0.5004829 0.2423684 0 0.4342802 0.2267567 0 0.4926288 0.2756744 0 0.4175775 0.2747614 0 0.251921 0.3066043 0 0.3134246 0.3066043 0 0.3134246 0.3238282 0 0.9045807 0.08274443 0 0.870132 0.08274443 0 0.8703611 0.02 0 0.1809319 0.3066043 0 0.2424355 0.3066043 0 0.2424355 0.3238282 0 0.1809319 0.3238282 0 0.2424355 0.3383098 0 0.1809319 0.3383098 0 0.9045807 0.7302121 0 0.7642328 0.7302121 0 0.4622904 0.6400531 0 0.4622904 0.5894963 0 0.4622904 0.6878676 0 0.4622904 0.7302121 0 0.1603479 0.6400531 0 0.1603479 0.5894963 0 0.1603479 0.6878676 0 0.160348 0.7302121 0 0.02 0.6400531 0 0.02 0.5894963 0 0.02 0.6878676 0 0.02 0.7302121 0 0.9045807 0.1739454 0 0.7613394 0.1739454 0 0.7946723 0.111201 0 0.8561759 0.111201 0 0.9045807 0.3563474 0 0.7642328 0.3563474 0 0.8097442 0.2936029 0 0.8712477 0.2936029 0 0.1603479 0.3563474 0 0.02 0.3563474 0 0.05333299 0.2936029 0 0.1148365 0.2936029 0 0.0625902 0.3942894 0 0.09680972 0.3942894 0 0.09680972 0.4570338 0 0.07958587 0.4570338 0 0.1446244 0.3942894 0 0.1112914 0.4570338 0 0.8703611 0.3942894 0 0.9045807 0.3942894 0 0.887585 0.4570338 0 0.8703611 0.4570338 0 0.8225465 0.3942894 0 0.8558795 0.4570338 0 0.251921 0.3238282 0 0.3134246 0.3383098 0 0.251921 0.3383098 0 0.9045807 0.2651464 0 0.7613394 0.2651464 0 0.8097442 0.2024019 0 0.8712477 0.2024019 0 0.887585 0.02 0 0.8227757 0.08274443 0 0.8558795 0.02 0 0.6855264 0.2651464 0 0.6510777 0.2651464 0 0.6680735 0.2024019 0 0.6852973 0.2024019 0 0.7328828 0.2651464 0 0.699779 0.2024019 0 0.4622904 0.428738 0 0.1632413 0.428738 0 0.4622904 0.4760944 0 0.4622904 0.5378596 0 0.7642328 0.3942894 0 0.7613394 0.428738 0 0.7613394 0.4760944 0 0.7642328 0.5378596 0 0.9045807 0.4763235 0 0.9045807 0.5378596 0 0.7642328 0.9067428 0 0.7642328 0.98 0 0.9045807 0.9067428 0 0.9045807 0.98 0 0.7642328 0.7818488 0 0.7642326 0.8551061 0 0.9045807 0.7818488 0 0.9045807 0.8551061 0</float_array>
+          <technique_common>
+            <accessor source="#geom-spoiler2-map3-array" count="124" stride="3">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+              <param name="P" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="geom-spoiler2-vertices">
+          <input semantic="POSITION" source="#geom-spoiler2-positions"/>
+        </vertices>
+        <triangles material="spoiler2" count="100">
+          <input semantic="VERTEX" source="#geom-spoiler2-vertices" offset="0"/>
+          <input semantic="TEXCOORD" source="#geom-spoiler2-map1" offset="1" set="0"/>
+          <input semantic="TEXCOORD" source="#geom-spoiler2-map3" offset="2" set="2"/>
+          <p>40 38 40 43 39 41 44 40 42 44 40 42 41 41 90 40 38 40 41 41 90 44 40 42 45 42 91 45 42 91 42 43 92 41 41 90 2 19 5 6 23 6 7 22 9 7 22 9 3 18 10 2 19 5 4 25 13 8 29 14 9 28 106 9 28 106 5 24 107 4 25 13 5 24 107 9 28 106 10 27 108 10 27 108 6 23 6 5 24 107 6 23 6 10 27 108 11 26 109 11 26 109 7 22 9 6 23 6 8 29 14 12 33 110 13 32 111 13 32 111 9 28 106 8 29 14 9 28 106 13 32 111 14 31 112 14 31 112 10 27 108 9 28 106 10 27 108 14 31 112 15 30 113 15 30 113 11 26 109 10 27 108 46 44 46 49 46 47 50 47 48 50 47 48 47 45 49 46 44 46 47 45 49 50 47 48 51 49 50 51 49 50 48 48 51 47 45 49 14 31 112 18 35 114 19 34 115 19 34 115 15 30 113 14 31 112 20 18 25 21 19 26 25 23 29 25 23 29 24 22 30 20 18 25 21 19 26 22 20 33 26 24 34 26 24 34 25 23 29 21 19 26 22 20 33 23 21 52 27 25 53 27 25 53 26 24 34 22 20 33 24 22 30 25 23 29 29 27 54 29 27 54 28 26 55 24 22 30 25 23 29 26 24 34 30 28 56 30 28 56 29 27 54 25 23 29 26 24 34 27 25 53 31 29 57 31 29 57 30 28 56 26 24 34 28 26 55 29 27 54 33 31 58 33 31 58 32 30 59 28 26 55 29 27 54 30 28 56 34 32 60 34 32 60 33 31 58 29 27 54 30 28 56 31 29 57 35 33 61 35 33 61 34 32 60 30 28 56 32 30 59 33 31 58 37 35 62 37 35 62 36 34 63 32 30 59 33 31 58 34 32 60 38 36 64 38 36 64 37 35 62 33 31 58 34 32 60 35 33 61 39 37 65 39 37 65 38 36 64 34 32 60 0 10 0 1 11 1 21 15 2 21 15 2 20 14 3 0 10 0 1 11 1 2 12 20 22 16 21 22 16 21 21 15 2 1 11 1 2 12 20 3 13 22 23 17 23 23 17 23 22 16 21 2 12 20 3 0 7 7 1 11 27 6 15 27 6 15 23 5 27 3 0 7 7 1 11 11 2 31 31 7 35 31 7 35 27 6 15 7 1 11 11 2 31 15 3 120 35 8 121 35 8 121 31 7 35 11 2 31 15 3 120 19 4 122 39 9 123 39 9 123 35 8 121 15 3 120 19 10 16 18 11 17 38 15 18 38 15 18 39 14 19 19 10 16 18 11 17 17 12 36 37 16 37 37 16 37 38 15 18 18 11 17 17 12 36 16 13 38 36 17 39 36 17 39 37 16 37 17 12 36 16 0 4 12 1 8 32 6 12 32 6 12 36 5 24 16 0 4 12 1 8 8 2 28 28 7 32 28 7 32 32 6 12 12 1 8 8 2 28 4 3 116 24 8 117 24 8 117 28 7 32 8 2 28 4 3 116 0 4 118 20 9 119 20 9 119 24 8 117 4 3 116 0 21 70 4 25 71 43 39 72 43 39 72 40 38 73 0 21 70 4 25 43 5 24 44 44 40 45 44 40 45 43 39 97 4 25 43 1 20 84 0 21 85 40 38 86 40 38 86 41 41 87 1 20 84 5 24 44 6 23 98 45 42 99 45 42 99 44 40 45 5 24 44 6 23 66 2 19 67 42 43 68 42 43 68 45 42 69 6 23 66 2 19 88 1 20 84 41 41 87 41 41 87 42 43 89 2 19 88 13 32 100 12 33 101 46 44 102 46 44 102 47 45 103 13 32 100 14 31 104 13 32 100 47 45 103 47 45 103 48 48 105 14 31 104 12 33 74 16 37 75 49 46 76 49 46 76 46 44 77 12 33 74 16 37 78 17 36 79 50 47 80 50 47 80 49 46 81 16 37 78 17 36 79 18 35 82 51 49 83 51 49 83 50 47 80 17 36 79 18 35 93 14 31 94 48 48 95 48 48 95 51 49 96 18 35 93</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_lights>
+    <light id="EnvironmentAmbientLight" name="EnvironmentAmbientLight">
+      <technique_common>
+        <ambient>
+          <color>0 0 0</color>
+        </ambient>
+      </technique_common>
+    </light>
+  </library_lights>
+  <library_images>
+    <image id="spoiler2_jpg">
+      <init_from>./images/spoiler2.jpg</init_from>
+    </image>
+  </library_images>
+  <library_visual_scenes>
+    <visual_scene id="MaxScene">
+      <node name="EnvironmentAmbientLight">
+        <instance_light url="#EnvironmentAmbientLight"/>
+      </node>
+      <node id="node-spoiler2" name="spoiler2">
+        <matrix>1 0 0 130.6556 0 1 0 3.199251 0 0 1 43.08537 0 0 0 1</matrix>
+        <instance_geometry url="#geom-spoiler2">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="spoiler2" target="#spoiler2-material">
+                <bind_vertex_input semantic="CHANNEL3" input_semantic="TEXCOORD" input_set="2"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#MaxScene"/>
+  </scene>
+</COLLADA>

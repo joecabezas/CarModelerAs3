@@ -1,0 +1,20 @@
+{
+	"auto": {
+		"piezas": {
+			"chasis": 0,
+			"ruedas": 0,
+			"spoilers": 1,
+			"faldones": 0,
+			"retrovisores": 0,
+			"capots": 0
+		},
+		"texturas": {
+			"left": "left.jpg",
+			"right": "right.jpg",
+			"top": "top.jpg"
+		},
+		"propiedades": {
+			"rotation": 20
+		}
+	}
+}
