@@ -28,6 +28,9 @@ package objetos3d
 		private var loader_max:LoaderMax;
 		private var loader_max_texs:LoaderMax;
 		
+		//loader names
+		public static const LOADER_MAX_TEXS:String = 'loaderMaxTexs';
+		
 		public function Car3D(dae_file:String)
 		{
 			super(dae_file);
@@ -42,7 +45,7 @@ package objetos3d
 			trace('Car3D.inicializarLoaders');
 			
 			this.loader_max_texs = new LoaderMax( {
-				name: 'texs_queue',
+				name: LOADER_MAX_TEXS,
 				maxConnections: 3
 				//onProgress: onTexsLoaderProgress,
 				//onComplete: onTexsLoaderComplete,
@@ -97,9 +100,9 @@ package objetos3d
 		
 		}
 		
-		private function cambiarTexturasAuto():void
+		public function cambiarTexturasAuto():void
 		{
-			trace('Car3D.onTexsLoaderComplete');
+			trace('Car3D.cambiarTexturasAuto');
 			
 			if (this.tex_right)
 			{
@@ -119,7 +122,7 @@ package objetos3d
 		
 		private function onLoaderProgress(e:LoaderEvent):void
 		{
-			trace("progress: " + e.target.progress);
+			trace("Car3D.onLoaderProgress progress: " + e.target.progress);
 			var p:Number = Number(e.target.progress) * 100;
 			//this.loadingBar.porcentaje.text = 'Cargando: ' + p + '%';
 		

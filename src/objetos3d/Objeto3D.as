@@ -39,14 +39,14 @@ package objetos3d
 			this.setup();
 		}
 		
-		public static function swapObjectMaterials(dae:DAE, objectName:String, material:MaterialObject3D):void
+		/*public static function swapObjectMaterials(dae:DAE, objectName:String, material:MaterialObject3D):void
 		{
 			var length:int = dae.getChildByName("COLLADA_Scene").getChildByName(objectName).geometry.faces.length;
 			for (var i:int = 0; i < length; i++)
 			{
 				TriangleMesh3D(dae.getChildByName("COLLADA_Scene").getChildByName(objectName).geometry.faces[i]).material = material;
 			}
-		}
+		}*/
 		
 		public function cambiarTextura(objectName:String, material:MaterialObject3D):void
 		{

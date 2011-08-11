@@ -8,6 +8,7 @@ package elementos
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.DataLoader;
 	import com.greensock.loading.LoaderMax;
+	import com.greensock.loading.LoaderStatus;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -24,6 +25,7 @@ package elementos
 	import objetos3d.Car3D;
 	import objetos3d.Objeto3D;
 	import org.papervision3d.cameras.DebugCamera3D;
+	import org.papervision3d.materials.BitmapMaterial;
 	import org.papervision3d.objects.DisplayObject3D;
 	import org.papervision3d.view.BasicView;
 	
@@ -33,6 +35,9 @@ package elementos
 	 */
 	public class Auto extends Sprite
 	{
+		//constantes de eventos publicos
+		public static const EVENT_LOAD_COMPLETE:String = 'eventLoadComplete';
+		
 		//constantes de tipos de piezas
 		//public static const TIPO_AUTO:String = 'tipoAuto';
 		public static const TIPO_CHASIS:String = 'tipoChasis';
@@ -75,17 +80,20 @@ package elementos
 		
 		private var json_url:String;
 		
-		public function Auto(mouse_target:DisplayObject)
+		//sprite de cargando info de usuario
+		private var loading_user_data_sprite:Sprite;
+		
+		public function Auto()
 		{
-			this.mouse_target = mouse_target;
+			//this.mouse_target = mouse_target;
 			
 			this.setup();
-			this.agregarListeners();
+			//this.agregarListeners();
 			this.fillArrays();
 			this.load();
 		}
 		
-		private function agregarListeners():void
+		private function agregarMouseListeners():void
 		{
 			this.mouse_target.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			this.mouse_target.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
@@ -196,9 +204,9 @@ package elementos
 			this.json_url = '';
 			
 			//setear el loader max
-			this.loader_max = new LoaderMax({name: 'objects_queue', maxConnections: 3, onProgress: onLoaderMaxProgress, onComplete: onLoaderMaxComplete, onError: onLoaderMaxError});
+			this.loader_max = new LoaderMax({name: 'main_queue', maxConnections: 3, onProgress: onLoaderMaxProgress, onComplete: onLoaderMaxComplete, onError: onLoaderMaxError});
 			
-			this.loader_max.append(new DataLoader(this.json_url, {name: JSON_LOADER, onComplete: onJsonLoaded}));
+			this.loader_max.append(new DataLoader(this.json_url, { name: JSON_LOADER, onComplete: onJsonLoaded } ));
 			
 			//configurar el basic view
 			this.main_basic_view = new BasicView();
@@ -226,16 +234,6 @@ package elementos
 			this.tipo_spoilers_actual = 0;
 		}
 		
-		private function onJsonLoaded(e:LoaderEvent):void
-		{
-			this.config = JSON.decode(e.target.content);
-			
-			//trace(data.auto.piezas.spoilers);
-			
-			this.cambiarElemento(Auto.TIPO_CHASIS, this.config.auto.piezas.chasis);
-			this.cambiarElemento(Auto.TIPO_SPOLIERS, this.config.auto.piezas.spoilers);
-		}
-		
 		private function load():void
 		{
 			//agregar barra de loading
@@ -247,7 +245,7 @@ package elementos
 			for each (o3d in this.chasisArray)
 			{
 				this.loader_max.append(o3d.getLoaderMax());
-					//trace('+'+o3d.getLoaderMax().numChildren);
+				//trace('+'+o3d.getLoaderMax().numChildren);
 			}
 			
 			for each (o3d in this.spoilersArray)
@@ -259,11 +257,45 @@ package elementos
 			this.loader_max.load();
 		}
 		
+		private function onJsonLoaded(e:LoaderEvent):void
+		{
+			trace('Auto.onJsonLoaded');
+			//trace(e.target.content);
+			this.config = JSON.decode(e.target.content);
+			
+			//trace(data.auto.piezas.spoilers);
+			
+			this.cambiarElemento(Auto.TIPO_CHASIS, this.config.auto.piezas.chasis);
+			this.cambiarElemento(Auto.TIPO_SPOLIERS, this.config.auto.piezas.spoilers);
+			
+			//recargar texturas
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.left, Car3D.LADO_IZQUIERDO);
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.right, Car3D.LADO_DERECHO);
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.top, Car3D.LADO_SUPERIOR);
+			
+			LoaderMax(Car3D(this.chasisArray[this.tipo_chasis_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).addEventListener(LoaderEvent.COMPLETE, onLoadTexs);
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS).load();
+		}
+		
+		private function onLoadTexs(e:LoaderEvent):void 
+		{
+			trace('Auto.onLoadTexs');
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).cambiarTexturasAuto();
+			
+			this.quitarLoadingBarInfoUsuario();
+		}
+		
 		private function onLoaderMaxComplete(e:LoaderEvent):void
 		{
 			trace('Auto.onLoaderMaxComplete');
+			
+			this.mouse_target = this.main_basic_view.viewport;
+			this.agregarMouseListeners();
 			this.quitarLoadingBar();
 			this.dibujar();
+			
+			//disparar evento
+			this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 		}
 		
 		private function onLoaderMaxProgress(e:LoaderEvent):void
@@ -300,6 +332,10 @@ package elementos
 			}
 		}
 		
+		public function cambiarTextura(tex:BitmapData, tipo:String):void {
+			Car3D(this.chasisArray[this.tipo_chasis_actual]).cambiarTextura(tipo, new BitmapMaterial(tex));
+		}
+		
 		public function getIdElemento(tipo:String):int
 		{
 			switch (tipo)
@@ -324,7 +360,33 @@ package elementos
 		
 		public function reloadJson():void
 		{
+			trace('Auto.reloadJson');
+			
+			//setear loading icon de informacion de usuario
+			this.agregarLoadingBarInfoUsuario();
+			
 			this.loader_max.getLoader(JSON_LOADER).load(true);
+			
+			/*switch(this.loader_max.getLoader(JSON_LOADER).status) {
+				case LoaderStatus.COMPLETED:
+					trace('COMPLETED');
+					break;
+				case LoaderStatus.DISPOSED:
+					trace('DISPOSED');
+					break;
+				case LoaderStatus.FAILED:
+					trace('FAILED');
+					break;
+				case LoaderStatus.LOADING:
+					trace('LOADING');
+					break;
+				case LoaderStatus.PAUSED:
+					trace('PAUSED');
+					break;
+				case LoaderStatus.READY:
+					trace('READY');
+					break;
+			}*/
 		}
 		
 		public function sendData():void
@@ -420,6 +482,28 @@ package elementos
 			if (this.loadingBar && this.contains(this.loadingBar))
 			{
 				this.removeChild(this.loadingBar);
+			}
+		}
+		
+		private function agregarLoadingBarInfoUsuario():void 
+		{
+			this.loading_user_data_sprite = new Sprite();
+			
+			var centerx:Number = (this.main_basic_view.viewport.x) + (this.main_basic_view.viewport.viewportWidth / 2);
+			var centery:Number = (this.main_basic_view.viewport.y) + (this.main_basic_view.viewport.viewportHeight / 2);
+			
+			this.loading_user_data_sprite.graphics.beginFill(0xffff00,0.7);
+			this.loading_user_data_sprite.graphics.drawCircle(centerx,centery,30);
+			this.loading_user_data_sprite.graphics.endFill();
+			
+			this.addChild(this.loading_user_data_sprite);
+		}
+		
+		private function quitarLoadingBarInfoUsuario():void 
+		{
+			//sacar icono de cargando informacion de usuario
+			if ((this.loading_user_data_sprite) && (this.contains(this.loading_user_data_sprite))) {
+				this.removeChild(this.loading_user_data_sprite);
 			}
 		}
 	}
