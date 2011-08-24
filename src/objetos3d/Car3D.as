@@ -34,8 +34,6 @@ package objetos3d
 		public function Car3D(dae_file:String)
 		{
 			super(dae_file);
-			
-			
 		
 			this.inicializarLoaders();	
 		}
@@ -61,7 +59,7 @@ package objetos3d
 				onError: onTexsLoaderError
 			});
 			
-			this.loader_max.append(this.loader_max_dae);
+			//this.loader_max.append(this.loader_max_dae);
 			this.loader_max.append(this.loader_max_texs);
 		}
 		
@@ -91,8 +89,8 @@ package objetos3d
 		}
 		
 		override protected function onDaeParsedExtraSteps():void {
-			trace('car3D.onDaeParsed');
-			this.cambiarTexturasAuto();
+			trace('car3D.onDaeParsedExtraSteps');
+			//this.cambiarTexturasAuto();
 		}
 		
 		private function onTexsLoaderError(e:LoaderEvent):void
@@ -104,11 +102,13 @@ package objetos3d
 		{
 			trace('Car3D.cambiarTexturasAuto');
 			
+			
 			if (this.tex_right)
 			{
 				this.cambiarTextura(LADO_DERECHO, new BitmapMaterial(this.loader_max.getLoader(LADO_DERECHO).rawContent.bitmapData));
 			}
 			
+			trace(this.loader_max.getLoader(LADO_IZQUIERDO));
 			if (this.tex_left)
 			{
 				this.cambiarTextura(LADO_IZQUIERDO, new BitmapMaterial(this.loader_max.getLoader(LADO_IZQUIERDO).rawContent.bitmapData));

@@ -562,19 +562,19 @@
   </library_lights>
   <library_images>
     <image id="auto_1_lateral_der_jpg">
-      <init_from>./images/auto_1_lateral_der.jpg</init_from>
+      <init_from>images/auto_1_lateral_der.jpg</init_from>
     </image>
     <image id="rueda_jpg">
-      <init_from>./images/rueda.jpg</init_from>
+      <init_from>images/rueda.jpg</init_from>
     </image>
     <image id="auto_1_lateral_izq_jpg">
-      <init_from>./images/auto_1_lateral_izq.jpg</init_from>
+      <init_from>images/auto_1_lateral_izq.jpg</init_from>
     </image>
     <image id="auto_jpg">
-      <init_from>./images/auto.jpg</init_from>
+      <init_from>images/auto.jpg</init_from>
     </image>
     <image id="piso_jpg">
-      <init_from>./images/piso.jpg</init_from>
+      <init_from>images/piso.jpg</init_from>
     </image>
   </library_images>
   <library_visual_scenes>

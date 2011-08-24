@@ -1,6 +1,7 @@
 package elementos
 {
 	import assets.Loading;
+	import com.demonsters.debugger.MonsterDebugger;
 	import com.marston.utils.URLRequestWrapper;
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.serialization.json.JSON;
@@ -39,7 +40,7 @@ package elementos
 		public static const EVENT_LOAD_COMPLETE:String = 'eventLoadComplete';
 		
 		//constantes de tipos de piezas
-		//public static const TIPO_AUTO:String = 'tipoAuto';
+		public static const TIPO_AUTO:String = 'tipoAuto';
 		public static const TIPO_CHASIS:String = 'tipoChasis';
 		public static const TIPO_RUEDAS:String = 'tipoRuedas';
 		public static const TIPO_SPOLIERS:String = 'tipoSpoilers';
@@ -51,7 +52,7 @@ package elementos
 		public static const JSON_LOADER:String = 'jsonLoader';
 		
 		//variables de tipos de piezas actuales (default: -1, no existe)
-		//private var tipo_auto_actual:int = -1;
+		private var tipo_auto_actual:int = -1;
 		private var tipo_chasis_actual:int = -1;
 		private var tipo_ruedas_actual:int = -1;
 		private var tipo_spoilers_actual:int = -1;
@@ -67,6 +68,8 @@ package elementos
 		private var main_basic_view:BasicView;
 		private var main_display_object_3d:DisplayObject3D;
 		
+		//array de piezas
+		private var autoArray:Array;
 		private var chasisArray:Array;
 		private var spoilersArray:Array;
 		
@@ -129,23 +132,26 @@ package elementos
 		private function fillArrays():void
 		{
 			//Auto 1
-			var car:Car3D = new Car3D('assets/daes/auto_1_piso40segs.DAE');
+			//var car:Car3D = new Car3D('assets/daes/auto_1_piso40segs.DAE');
+			//var car:Car3D = new Car3D('assets/daes/auto_1.DAE');
+			//var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
+			var car:Car3D = new Car3D('assets/daes/wv_UV.dae'); //21X
 			//car.setTex('images/auto_1_lateral_izq_b.jpg', Car3D.LADO_IZQUIERDO);
 			//car.setTex('images/grass.png', Car3D.LADO_SUPERIOR);
-			this.chasisArray.push(car);
+			this.autoArray.push(car);
 			
 			//this.chasisArray.push(new Car3D('assets/daes/auto_9.DAE'));
-			this.chasisArray.push(new Car3D('assets/daes/auto_mas_poligonos.DAE'));
+			//this.chasisArray.push(new Car3D('assets/daes/auto_mas_poligonos.DAE'));
 			
 			//spoiler 1			
-			this.spoilersArray.push(new Objeto3D('assets/daes/spoiler1.DAE'));
-			this.spoilersArray.push(new Objeto3D('assets/daes/spoiler2.DAE'));
+			//this.spoilersArray.push(new Objeto3D('assets/daes/spoiler1.DAE'));
+			//this.spoilersArray.push(new Objeto3D('assets/daes/spoiler2.DAE'));
 		}
 		
 		private function dibujar():void
 		{
 			//agregar a la escena los elementos por defecto
-			this.main_display_object_3d.addChild(this.chasisArray[this.tipo_chasis_actual].getDae(), TIPO_CHASIS);
+			this.main_display_object_3d.addChild(Car3D(this.autoArray[this.tipo_auto_actual]).getDae(), TIPO_AUTO);
 			
 			//agregar el main displayObject3d al main basic view
 			this.main_basic_view.scene.addChild(this.main_display_object_3d);
@@ -218,7 +224,7 @@ package elementos
 			this.main_basic_view.viewport.x = 480;
 			this.main_basic_view.viewport.y = 0;
 			
-			this.main_basic_view.camera.zoom = 1000 / this.main_basic_view.camera.focus + 1;
+			this.main_basic_view.camera.zoom = 21*1000 / this.main_basic_view.camera.focus + 1;
 			this.main_basic_view.camera.y = 200;
 			
 			//configurar el main displayObject3D
@@ -226,23 +232,26 @@ package elementos
 			this.desired_rotation = 0;
 			
 			//crear arreglos de elementos
+			this.autoArray = new Array();
 			this.chasisArray = new Array();
 			this.spoilersArray = new Array();
 			
 			//setear los elementos a mostrar or defecto
-			this.tipo_chasis_actual = 0;
-			this.tipo_spoilers_actual = 0;
+			this.tipo_auto_actual = 0;
+			this.tipo_chasis_actual = -1;
+			this.tipo_spoilers_actual = -1;
 		}
 		
 		private function load():void
 		{
+			trace('Auto.load');
 			//agregar barra de loading
 			this.agregarLoadingBar();
 			
 			var o3d:Objeto3D;
 			
 			//agregar los loaders de cada elemento DAE
-			for each (o3d in this.chasisArray)
+			for each (o3d in this.autoArray)
 			{
 				this.loader_max.append(o3d.getLoaderMax());
 				//trace('+'+o3d.getLoaderMax().numChildren);
@@ -265,22 +274,25 @@ package elementos
 			
 			//trace(data.auto.piezas.spoilers);
 			
-			this.cambiarElemento(Auto.TIPO_CHASIS, this.config.auto.piezas.chasis);
-			this.cambiarElemento(Auto.TIPO_SPOLIERS, this.config.auto.piezas.spoilers);
+			//this.cambiarElemento(Auto.TIPO_AUTO, this.config.auto.piezas.auto);
+			//this.cambiarElemento(Auto.TIPO_CHASIS, this.config.auto.piezas.chasis);
+			//this.cambiarElemento(Auto.TIPO_SPOLIERS, this.config.auto.piezas.spoilers);
 			
 			//recargar texturas
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.left, Car3D.LADO_IZQUIERDO);
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.right, Car3D.LADO_DERECHO);
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).setTex(this.config.auto.texturas.top, Car3D.LADO_SUPERIOR);
+			Car3D(this.autoArray[this.tipo_auto_actual]).setTex(this.config.auto.texturas.left, Car3D.LADO_IZQUIERDO);
+			Car3D(this.autoArray[this.tipo_auto_actual]).setTex(this.config.auto.texturas.right, Car3D.LADO_DERECHO);
+			Car3D(this.autoArray[this.tipo_auto_actual]).setTex(this.config.auto.texturas.top, Car3D.LADO_SUPERIOR);
 			
-			LoaderMax(Car3D(this.chasisArray[this.tipo_chasis_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).addEventListener(LoaderEvent.COMPLETE, onLoadTexs);
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS).load();
+			LoaderMax(Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).addEventListener(LoaderEvent.COMPLETE, onLoadTexs);
+			Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS).load();
 		}
 		
 		private function onLoadTexs(e:LoaderEvent):void 
 		{
 			trace('Auto.onLoadTexs');
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).cambiarTexturasAuto();
+			MonsterDebugger.trace(this, this.autoArray);
+			MonsterDebugger.trace(this, this.tipo_auto_actual);
+			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTexturasAuto();
 			
 			this.quitarLoadingBarInfoUsuario();
 		}
@@ -321,6 +333,12 @@ package elementos
 			
 			switch (tipo)
 			{
+				case TIPO_AUTO:
+					//al escoger un auto nuevo, se deben remover todos los objetos y poner el auto vacio
+					this.resetCar();
+					this.tipo_auto_actual = id;
+					this.main_display_object_3d.addChild(this.autoArray[this.tipo_auto_actual].getDae(), TIPO_SPOLIERS);
+					break;
 				case TIPO_SPOLIERS: 
 					this.tipo_spoilers_actual = id;
 					this.main_display_object_3d.addChild(this.spoilersArray[this.tipo_spoilers_actual].getDae(), TIPO_SPOLIERS);
@@ -330,6 +348,21 @@ package elementos
 					this.main_display_object_3d.addChild(this.chasisArray[this.tipo_chasis_actual].getDae(), TIPO_CHASIS);
 					break;
 			}
+		}
+		
+		private function resetCar():void 
+		{
+			//setear tipos actuales
+			this.tipo_auto_actual = -1;
+			this.tipo_capots_actual = -1;
+			this.tipo_chasis_actual = -1;
+			this.tipo_faldones_actual = -1;
+			this.tipo_retrovisores_actual = -1;
+			this.tipo_ruedas_actual = -1;
+			this.tipo_spoilers_actual = -1;
+			
+			//borrar elementos main display object 3d
+			//trace(this.main_display_object_3d.numChildren);
 		}
 		
 		public function cambiarTextura(tex:BitmapData, tipo:String):void {

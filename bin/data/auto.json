@@ -1,6 +1,7 @@
 {
 	"auto": {
 		"piezas": {
+			"auto" : 0,
 			"chasis": 0,
 			"ruedas": 0,
 			"spoilers": 1,
@@ -9,7 +10,7 @@
 			"capots": 0
 		},
 		"texturas": {
-			"left": "images/auto_1_lateral_izq_b.jpg",
+			"left": "assets/daes/images/auto_1_lateral_izq_b.jpg",
 			"right": "http://farm6.static.flickr.com/5102/5573338779_d920412f21_m.jpg",
 			"top": "http://farm6.static.flickr.com/5211/5405860653_3461d679bf_m.jpg"
 		},

@@ -54,6 +54,7 @@
     <element path="lib\Papervision3D_2.1.932.swc" />
     <element path="lib\greensock.swc" />
     <element path="lib\porcentaje.swc" />
+    <element path="lib\MonsterDebugger.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
