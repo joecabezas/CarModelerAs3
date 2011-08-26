@@ -134,8 +134,8 @@ package elementos
 			//Auto 1
 			//var car:Car3D = new Car3D('assets/daes/auto_1_piso40segs.DAE');
 			//var car:Car3D = new Car3D('assets/daes/auto_1.DAE');
-			//var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
-			var car:Car3D = new Car3D('assets/daes/wv_UV.dae'); //21X
+			var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
+			//var car:Car3D = new Car3D('assets/daes/wv_UV.dae'); //21X
 			//car.setTex('images/auto_1_lateral_izq_b.jpg', Car3D.LADO_IZQUIERDO);
 			//car.setTex('images/grass.png', Car3D.LADO_SUPERIOR);
 			this.autoArray.push(car);
