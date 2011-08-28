@@ -1,15 +1,12 @@
 package elementos
 {
 	import assets.Loading;
-	import com.demonsters.debugger.MonsterDebugger;
-	import com.marston.utils.URLRequestWrapper;
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.serialization.json.JSON;
-	import com.base86.Tools;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.DataLoader;
 	import com.greensock.loading.LoaderMax;
-	import com.greensock.loading.LoaderStatus;
+	import com.marston.utils.URLRequestWrapper;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -19,13 +16,9 @@ package elementos
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.net.URLRequestMethod;
-	import flash.net.URLVariables;
 	import flash.utils.ByteArray;
 	import objetos3d.Car3D;
 	import objetos3d.Objeto3D;
-	import org.papervision3d.cameras.DebugCamera3D;
 	import org.papervision3d.materials.BitmapMaterial;
 	import org.papervision3d.objects.DisplayObject3D;
 	import org.papervision3d.view.BasicView;
@@ -120,7 +113,7 @@ package elementos
 			var deltaX:Number = this.posInicialMouseX - this.mouseX;
 			this.updateRotation(deltaX * 0.5);
 			this.posInicialMouseX = this.mouseX;
-			trace('Auto.onMouseMove');
+			//trace('Auto.onMouseMove');
 		}
 		
 		public function updateRotation(r:Number):void
@@ -132,20 +125,19 @@ package elementos
 		private function fillArrays():void
 		{
 			//Auto 1
-			//var car:Car3D = new Car3D('assets/daes/auto_1_piso40segs.DAE');
-			//var car:Car3D = new Car3D('assets/daes/auto_1.DAE');
-			var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
+			//var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
 			//var car:Car3D = new Car3D('assets/daes/wv_UV.dae'); //21X
 			//car.setTex('images/auto_1_lateral_izq_b.jpg', Car3D.LADO_IZQUIERDO);
 			//car.setTex('images/grass.png', Car3D.LADO_SUPERIOR);
-			this.autoArray.push(car);
+			this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
+			this.autoArray.push(new Car3D('assets/daes/auto_1.DAE'));
 			
 			//this.chasisArray.push(new Car3D('assets/daes/auto_9.DAE'));
 			//this.chasisArray.push(new Car3D('assets/daes/auto_mas_poligonos.DAE'));
 			
 			//spoiler 1			
-			//this.spoilersArray.push(new Objeto3D('assets/daes/spoiler1.DAE'));
-			//this.spoilersArray.push(new Objeto3D('assets/daes/spoiler2.DAE'));
+			this.spoilersArray.push(new Objeto3D('assets/daes/spoiler1.DAE'));
+			this.spoilersArray.push(new Objeto3D('assets/daes/spoiler2.DAE'));
 		}
 		
 		private function dibujar():void
@@ -221,10 +213,10 @@ package elementos
 			this.main_basic_view.viewport.viewportWidth = 400;
 			this.main_basic_view.viewport.viewportHeight = 400;
 			
-			this.main_basic_view.viewport.x = 480;
+			this.main_basic_view.viewport.x = 0;
 			this.main_basic_view.viewport.y = 0;
 			
-			this.main_basic_view.camera.zoom = 21*1000 / this.main_basic_view.camera.focus + 1;
+			this.main_basic_view.camera.zoom = 1*1000 / this.main_basic_view.camera.focus + 1;
 			this.main_basic_view.camera.y = 200;
 			
 			//configurar el main displayObject3D
@@ -290,8 +282,6 @@ package elementos
 		private function onLoadTexs(e:LoaderEvent):void 
 		{
 			trace('Auto.onLoadTexs');
-			MonsterDebugger.trace(this, this.autoArray);
-			MonsterDebugger.trace(this, this.tipo_auto_actual);
 			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTexturasAuto();
 			
 			this.quitarLoadingBarInfoUsuario();
@@ -337,7 +327,7 @@ package elementos
 					//al escoger un auto nuevo, se deben remover todos los objetos y poner el auto vacio
 					this.resetCar();
 					this.tipo_auto_actual = id;
-					this.main_display_object_3d.addChild(this.autoArray[this.tipo_auto_actual].getDae(), TIPO_SPOLIERS);
+					this.main_display_object_3d.addChild(this.autoArray[this.tipo_auto_actual].getDae(), TIPO_AUTO);
 					break;
 				case TIPO_SPOLIERS: 
 					this.tipo_spoilers_actual = id;
@@ -352,6 +342,8 @@ package elementos
 		
 		private function resetCar():void 
 		{
+			trace('Auto.resetCar');
+			
 			//setear tipos actuales
 			this.tipo_auto_actual = -1;
 			this.tipo_capots_actual = -1;
@@ -362,17 +354,25 @@ package elementos
 			this.tipo_spoilers_actual = -1;
 			
 			//borrar elementos main display object 3d
-			//trace(this.main_display_object_3d.numChildren);
+			trace(this.main_display_object_3d.numChildren);
+			for each(var i:DisplayObject3D in this.main_display_object_3d.children) {
+				this.main_display_object_3d.removeChild(i);
+			}
+			trace(this.main_display_object_3d.numChildren);
+			//ObjectUtil.pr(this.main_display_object_3d.children);
 		}
 		
 		public function cambiarTextura(tex:BitmapData, tipo:String):void {
-			Car3D(this.chasisArray[this.tipo_chasis_actual]).cambiarTextura(tipo, new BitmapMaterial(tex));
+			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTextura(tipo, new BitmapMaterial(tex));
 		}
 		
 		public function getIdElemento(tipo:String):int
 		{
 			switch (tipo)
 			{
+				case TIPO_AUTO: 
+					return this.tipo_auto_actual;
+					break;
 				case TIPO_SPOLIERS: 
 					return this.tipo_spoilers_actual;
 					break;
@@ -443,6 +443,16 @@ package elementos
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onSendJson);
 			loader.load(reqw.request);
+		}
+		
+		public function setViewportWidth(number:Number):void 
+		{
+			this.main_basic_view.viewport.viewportWidth = number;
+		}
+		
+		public function setViewportHeight(number:Number):void 
+		{
+			this.main_basic_view.viewport.viewportHeight = number;
 		}
 		
 		private function takeScreenshot(quality:Number = 50, screenshot_width:Number = 400, screenshot_height:Number = 300):ByteArray

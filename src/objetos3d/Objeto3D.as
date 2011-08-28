@@ -2,22 +2,11 @@ package objetos3d
 
 {
 	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.DataLoader;
 	import com.greensock.loading.LoaderMax;
-	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import loaders.DaeLoader;
 	import org.papervision3d.core.proto.MaterialObject3D;
 	import org.papervision3d.events.FileLoadEvent;
-	import org.papervision3d.materials.BitmapMaterial;
-	import org.papervision3d.materials.ColorMaterial;
-	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.DisplayObject3D;
 	import org.papervision3d.objects.parsers.DAE;
-	import org.papervision3d.view.BasicView;
-	import org.papervision3d.core.geom.TriangleMesh3D;
 	
 	/**
 	 * ...

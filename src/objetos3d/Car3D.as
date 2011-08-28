@@ -1,11 +1,8 @@
 package objetos3d
 {
-	import assets.Loading;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
-	import flash.display.DisplayObject;
-	import org.papervision3d.events.FileLoadEvent;
 	import org.papervision3d.materials.BitmapMaterial;
 	
 	/**

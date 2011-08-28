@@ -1,25 +1,12 @@
 package
 {
-	import assets.Loading;
-	import com.demonsters.debugger.MonsterDebugger;
-	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.DataLoader;
-	import com.greensock.loading.LoaderMax;
+	import com.as3joelib.joeeditor.JoeEditor;
+	import com.as3joelib.ui.UISwitcher;
 	import elementos.Auto;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
-	import flash.events.DataEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.text.TextField;
-	import flash.text.TextFieldType;
-	import flash.text.TextFormat;
-	import menus.StackNode;
 	import objetos3d.Car3D;
-	import objetos3d.SimpleDAELoader;
-	
 	/**
 	 * ...
 	 * @author Joe Cabezas
@@ -29,15 +16,22 @@ package
 	
 	public class Main extends Sprite
 	{
-		public var auto:Auto;
-		private var loader_max:LoaderMax;
+		//elementos de switcher
+		private var auto:Auto;
+		private var editor:JoeEditor;
+		
+		//creoq  no sirve esto ya
+		//private var loader_max:LoaderMax;
 		
 		//elementos para generar una textura tepomral
-		private var tex_sprite:Sprite;
-		private var tex_textfield:TextField;
+		//private var tex_sprite:Sprite;
+		//private var tex_textfield:TextField;
 		
 		//external
 		private var ei:ExternalInterfaceExample;
+		
+		//ui
+		private var switcher:UISwitcher;
 		
 		public function Main():void
 		{
@@ -53,8 +47,8 @@ package
 			//entry point
 			
 			//temp
-			var sn:StackNode = new StackNode('http://www.veryicon.com/icon/png/Object/Global%20Warming/Wheel.png', 'nombre');
-			this.addChild(sn);
+			//var sn:StackNode = new StackNode('http://www.veryicon.com/icon/png/Object/Global%20Warming/Wheel.png', 'nombre');
+			//this.addChild(sn);
 			
 			this.setup();
 			this.agregarListeners();
@@ -83,19 +77,20 @@ package
 			
 			switch(e.keyCode) {
 				case 49: //1
-					id = (this.auto.getIdElemento(Auto.TIPO_CHASIS)+1) % 1;
-					this.auto.cambiarElemento(Auto.TIPO_CHASIS, id);
+					id = (this.auto.getIdElemento(Auto.TIPO_AUTO)+1) % 2;
+					this.auto.cambiarElemento(Auto.TIPO_AUTO, id);
 					break;
 				case 50: //2
 					id = (this.auto.getIdElemento(Auto.TIPO_SPOLIERS)+1) % 2;
 					this.auto.cambiarElemento(Auto.TIPO_SPOLIERS, id);
 					break;
 				case 51: //3
-					id = (this.auto.getIdElemento(Auto.TIPO_AUTO)+1) % 1;
-					this.auto.cambiarElemento(Auto.TIPO_AUTO, id);
 					break;
 				case 52: //4
 					this.cambiarTexturaAuto(Car3D.LADO_IZQUIERDO);
+					break;
+				case 53: //5
+					this.pintarAuto(Car3D.LADO_IZQUIERDO);
 					break;
 				case 76: //l
 					//recargar auto
@@ -108,9 +103,17 @@ package
 			}
 		}
 		
+		private function pintarAuto(lado:String):void 
+		{
+			//to do: considerar parametro "lado"
+			
+			//hacer que el auto se mueva al lado a pintar
+			//this.auto.mostrarLado(Car3D.LADO_IZQUIERDO);
+		}
+		
 		private function cambiarTexturaAuto(tipo:String):void 
 		{
-			var bmpd:BitmapData = new BitmapData(this.tex_sprite.width, this.tex_sprite.height);
+			/*var bmpd:BitmapData = new BitmapData(this.tex_sprite.width, this.tex_sprite.height);
 			var bmp:Bitmap = new Bitmap(bmpd);
 			
 			bmpd.draw(this.tex_sprite);
@@ -129,18 +132,21 @@ package
 			this.addChild(bmp);
 			bmp.y = this.tex_sprite.y + bmp.height;
 			
-			this.auto.cambiarTextura(bmp.bitmapData, tipo);
+			this.auto.cambiarTextura(bmp.bitmapData, tipo);*/
 		}
 		
 		private function setup():void
-		{
-			// Start the MonsterDebugger
-            MonsterDebugger.initialize(this);
-            //MonsterDebugger.trace(this, "Hello World!");
-			
+		{			
 			this.auto = new Auto();
+			this.auto.setViewportWidth(500);
+			this.auto.setViewportHeight(500);
 			
-			this.tex_sprite = new Sprite();
+			this.editor = new JoeEditor();
+			
+			//switcher
+			this.switcher = new UISwitcher();
+			
+			/*this.tex_sprite = new Sprite();
 			this.tex_textfield = new TextField();
 			this.tex_textfield.type = TextFieldType.INPUT;
 			this.tex_textfield.multiline = true;
@@ -154,18 +160,26 @@ package
 			this.tex_textfield.defaultTextFormat = tf;
 			
 			this.tex_sprite.addChild(this.tex_textfield);
-			this.tex_sprite.y = this.stage.stageHeight / 2 + 30;
+			this.tex_sprite.y = this.stage.stageHeight / 2 + 30;*/
 			
 			//editor
-			this.ei = new ExternalInterfaceExample();
+			//this.ei = new ExternalInterfaceExample();
 		}
 		
 		private function dibujar():void
 		{
 			this.addChild(this.auto);
-			this.addChild(this.tex_sprite);
+			this.switcher.addItem(this.auto);
 			
-			this.addChild(this.ei);
+			this.addChild(this.editor);
+			this.switcher.addItem(this.editor);
+			
+			this.switcher.hideAllItems();
+			this.switcher.switchTo(0);
+			
+			//this.addChild(this.tex_sprite);
+			
+			//this.addChild(this.ei);
 			
 			//temp
 			/*var sd:SimpleDAELoader = new SimpleDAELoader();
