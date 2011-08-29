@@ -6,6 +6,7 @@ package elementos
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.DataLoader;
 	import com.greensock.loading.LoaderMax;
+	import com.greensock.TweenLite;
 	import com.marston.utils.URLRequestWrapper;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -119,6 +120,10 @@ package elementos
 		public function updateRotation(r:Number):void
 		{
 			this.desired_rotation += r;
+			
+			//que no sobrepase 360
+			this.desired_rotation = this.desired_rotation % 360;
+			
 			this.main_display_object_3d.rotationY = this.desired_rotation;
 		}
 		
@@ -453,6 +458,36 @@ package elementos
 		public function setViewportHeight(number:Number):void 
 		{
 			this.main_basic_view.viewport.viewportHeight = number;
+		}
+		
+		public function mostrarLado(lado:String):void 
+		{
+			var anguloY:Number;
+			var anguloX:Number;
+			
+			switch(lado) {
+				case Car3D.LADO_IZQUIERDO:
+					anguloY = 0;
+					anguloX = 0;
+					break;
+				case Car3D.LADO_DERECHO:
+					anguloY = 180;
+					anguloX = 0;
+					break;
+				case Car3D.LADO_SUPERIOR:
+					anguloY = 0;
+					anguloX = -90;
+					break;
+				default:
+					anguloY = 0;
+					anguloX = 0;
+					break;
+			}
+			
+			//actualizar desired rotation
+			this.desired_rotation = anguloY;
+			
+			TweenLite.to(this.main_display_object_3d, 0.4, { rotationX: anguloX, rotationY:anguloY } );
 		}
 		
 		private function takeScreenshot(quality:Number = 50, screenshot_width:Number = 400, screenshot_height:Number = 300):ByteArray

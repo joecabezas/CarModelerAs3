@@ -1,6 +1,7 @@
 package objetos3d
 
 {
+	import com.adobe.air.crypto.EncryptionKeyGenerator;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.LoaderMax;
 	import org.papervision3d.core.proto.MaterialObject3D;
@@ -39,7 +40,7 @@ package objetos3d
 		private function agregarListeners():void
 		{
 			trace('Objeto3D.agregarListeners');
-			this.dae.addEventListener(FileLoadEvent.LOAD_COMPLETE, onDaeLoadComplete)
+			this.dae.addEventListener(FileLoadEvent.LOAD_COMPLETE, onDaeLoadComplete);
 		}
 		
 		private function onDaeLoadComplete(e:FileLoadEvent):void
@@ -48,6 +49,8 @@ package objetos3d
 			//trace(this.loader_max_dae);
 			//this.dae = this.loader_max_dae.getLoader(DAE_FILE).getDae();
 			this.dae.y = -6;
+			
+			trace(this.dae.getChildByName('COLLADA_Scene').getChildByName(Car3D.LADO_IZQUIERDO));
 			
 			trace(this.dae.filename);
 			
@@ -59,7 +62,11 @@ package objetos3d
 			trace('Objeto3D.cambiarTextura');
 			if (this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName))
 			{
-				this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName).material = material;
+				//this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName).material = material;
+				var target:DisplayObject3D = this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName);
+				
+				target.setChildMaterial(target, material, target.material);
+				trace(target.material);
 			}
 		}
 		
