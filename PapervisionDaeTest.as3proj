@@ -17,7 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="lib" />
-    <class path="..\JoeEditor\src" />
+    <class path="..\AS3DrawBoard\src" />
     <class path="..\libs\as3joelib" />
     <class path="..\libs\swc" />
     <class path="..\libs\coordy-0.9.9\swc" />
