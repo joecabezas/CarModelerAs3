@@ -109,6 +109,9 @@ package
 			
 			//hacer que el auto se mueva al lado a pintar
 			//this.auto.mostrarLado(Car3D.LADO_IZQUIERDO);
+			
+			//hacer que el switcher deje activado el editor
+			this.switcher.showItem(this.editor);
 		}
 		
 		private function cambiarTexturaAuto(tipo:String):void 
@@ -145,6 +148,7 @@ package
 			
 			//switcher
 			this.switcher = new UISwitcher();
+			//this.switcher.
 			
 			/*this.tex_sprite = new Sprite();
 			this.tex_textfield = new TextField();
@@ -175,7 +179,7 @@ package
 			this.switcher.addItem(this.editor);
 			
 			this.switcher.hideAllItems();
-			this.switcher.switchTo(0);
+			this.switcher.showItem(this.auto);
 			
 			//this.addChild(this.tex_sprite);
 			

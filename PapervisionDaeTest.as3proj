@@ -67,7 +67,6 @@
     <element path="..\libs\coordy-0.9.9\swc\coordy.swc" />
     <element path="..\libs\swc\Papervision3D_2.1.932.swc" />
     <element path="..\libs\swc\porcentaje.swc" />
-    <element path="..\libs\swc\DropDown.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
