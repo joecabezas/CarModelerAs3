@@ -86,7 +86,7 @@
   </library_effects>
   <library_images>
     <image id="file9" name="file9">
-      <init_from>todoslos%20Uv%20copy.jpg</init_from>
+      <init_from>images/todoslos_Uv_copy.jpg</init_from>
       <extra>
         <technique profile="OpenCOLLADAMaya">
           <dgnode_type>kFile</dgnode_type>

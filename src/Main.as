@@ -13,27 +13,28 @@ package
 	 * ...
 	 * @author Joe Cabezas
 	 */
-	[SWF(backgroundColor="#eeeeee",width=920,height=600,frameRate=60)]
+	[SWF(backgroundColor="#cccccc",width=920,height=600,frameRate=60)]
 	[Frame(factoryClass="Preloader")]
 	
 	public class Main extends Sprite
 	{
 		//elementos de switcher
 		private var auto:Auto;
-		private var editor:JoeEditor;
 		
-		//creoq  no sirve esto ya
-		//private var loader_max:LoaderMax;
+		//editores
+		private var editor_lado_izquierdo:JoeEditor;
+		private var editor_lado_derecho:JoeEditor;
+		private var editor_lado_superior:JoeEditor;
 		
-		//elementos para generar una textura tepomral
-		//private var tex_sprite:Sprite;
-		//private var tex_textfield:TextField;
+		//vars
+		private var lado_que_se_esta_editando:String;
 		
 		//external
 		private var ei:ExternalInterfaceExample;
 		
-		//ui
-		private var switcher:UISwitcher;
+		//switchers
+		private var switcher_main:UISwitcher;
+		private var switcher_editores:UISwitcher;
 		
 		public function Main():void
 		{
@@ -101,7 +102,7 @@ package
 					this.pintarAuto(Car3D.LADO_SUPERIOR);
 					break;
 				case 56: //8
-					this.pintarAutoReady(Car3D.LADO_IZQUIERDO);
+					this.pintarAutoReady();
 					break;
 				case 76: //l
 					//recargar auto
@@ -116,27 +117,55 @@ package
 		
 		private function pintarAuto(lado:String):void 
 		{
-			//to do: considerar parametro "lado"
+			this.switcher_main.switchTo(this.auto);
+			
+			//recordar que estamos modificando este lado
+			this.lado_que_se_esta_editando = lado;
 			
 			//hacer que el auto se mueva al lado a pintar
 			this.auto.mostrarLado(lado);
 			
 			//hacer que el switcher deje activado el editor
-			this.switcher.switchTo(this.editor, false);
+			switch(lado) {
+				case Car3D.LADO_IZQUIERDO:
+					this.switcher_main.switchTo(this.editor_lado_izquierdo, false);
+					break;
+				case Car3D.LADO_DERECHO:
+					this.switcher_main.switchTo(this.editor_lado_derecho, false);
+					break;
+				case Car3D.LADO_SUPERIOR:
+					this.switcher_main.switchTo(this.editor_lado_superior, false);
+					break;
+			}
 		}
 		
-		private function pintarAutoReady(lado:String):void 
+		private function pintarAutoReady():void 
 		{
 			//obtener bitmap del editor
-			var bmpd:BitmapData = this.editor.getBitmapData();
+			var bmpd:BitmapData;
+			
+			switch(this.lado_que_se_esta_editando) {
+				case Car3D.LADO_IZQUIERDO:
+					bmpd = this.editor_lado_izquierdo.getBitmapData();
+					break;
+				case Car3D.LADO_DERECHO:
+					bmpd = this.editor_lado_derecho.getBitmapData();
+					break;
+				case Car3D.LADO_SUPERIOR:
+					bmpd = this.editor_lado_superior.getBitmapData();
+					break;
+			}
 			
 			//this.addChild(new Bitmap(bmpd));
 			
 			//cambiar textura al auto
-			this.auto.cambiarTextura(bmpd, lado);
+			var bmp:Bitmap = this.auto.cambiarTextura(bmpd, this.lado_que_se_esta_editando);
+			this.addChild(bmp);
+			
+			bmp.scaleX = bmp.scaleY = 0.2;
 			
 			//hacer que el switcher me cambie al visor del auto nuevamente
-			this.switcher.switchTo(this.auto);
+			this.switcher_main.switchTo(this.auto);
 		}
 		
 		private function cambiarTexturaAuto(tipo:String):void 
@@ -169,51 +198,39 @@ package
 			this.auto.setViewportWidth(this.stage.stageWidth);
 			this.auto.setViewportHeight(this.stage.stageHeight);
 			
-			this.editor = new JoeEditor();
+			//editores
+			this.editor_lado_izquierdo = new JoeEditor();
+			this.editor_lado_derecho = new JoeEditor();
+			this.editor_lado_superior = new JoeEditor();
 			
-			//switcher
-			this.switcher = new UISwitcher();
-			this.switcher.animation_in_object = {duration:0.3, alpha:1}
-			this.switcher.animation_out_object = {duration:0.3, alpha:0}
+			//switchers
+			this.switcher_main = new UISwitcher();
+			this.switcher_main.animation_in_object = {duration:0.3, alpha:1}
+			this.switcher_main.animation_out_object = { duration:0.3, alpha:0 }
 			
-			/*this.tex_sprite = new Sprite();
-			this.tex_textfield = new TextField();
-			this.tex_textfield.type = TextFieldType.INPUT;
-			this.tex_textfield.multiline = true;
-			this.tex_textfield.border = true;
-			this.tex_textfield.width = 200;
+			this.switcher_editores = new UISwitcher();
+			this.switcher_editores.animation_in_object = {duration:0, alpha:1}
+			this.switcher_editores.animation_out_object = {duration:0, alpha:0}
 			
-			var tf:TextFormat = new TextFormat();
-			tf.bold = true;
-			tf.size = 30;
-			
-			this.tex_textfield.defaultTextFormat = tf;
-			
-			this.tex_sprite.addChild(this.tex_textfield);
-			this.tex_sprite.y = this.stage.stageHeight / 2 + 30;*/
-			
-			//editor
+			//ei
 			//this.ei = new ExternalInterfaceExample();
 		}
 		
 		private function dibujar():void
 		{
 			this.addChild(this.auto);
-			this.switcher.addItem(this.auto);
+
+			this.addChild(this.editor_lado_izquierdo);
+			this.addChild(this.editor_lado_derecho);
+			this.addChild(this.editor_lado_superior);
+
+			this.switcher_main.addItem(this.auto);
+			this.switcher_main.addItem(this.editor_lado_izquierdo);
+			this.switcher_main.addItem(this.editor_lado_derecho);
+			this.switcher_main.addItem(this.editor_lado_superior);
 			
-			this.addChild(this.editor);
-			this.switcher.addItem(this.editor);
-			
-			this.switcher.hideAllItems();
-			this.switcher.switchTo(this.auto);
-			
-			//this.addChild(this.tex_sprite);
-			
-			//this.addChild(this.ei);
-			
-			//temp
-			/*var sd:SimpleDAELoader = new SimpleDAELoader();
-			this.addChild(sd);*/
+			this.switcher_main.hideAllItems();
+			this.switcher_main.switchTo(this.auto);
 		}
 	
 	}

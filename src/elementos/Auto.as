@@ -130,11 +130,11 @@ package elementos
 		private function fillArrays():void
 		{
 			//Auto 1
-			//var car:Car3D = new Car3D('assets/daes/wv_modelado2.dae'); //21X
 			//var car:Car3D = new Car3D('assets/daes/wv_UV.dae'); //21X
 			//car.setTex('images/auto_1_lateral_izq_b.jpg', Car3D.LADO_IZQUIERDO);
 			//car.setTex('images/grass.png', Car3D.LADO_SUPERIOR);
-			this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
+			//this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
+			//this.autoArray.push(new Car3D('assets/daes/wv_modelado2.dae'));
 			this.autoArray.push(new Car3D('assets/daes/auto_1.DAE'));
 			
 			//this.chasisArray.push(new Car3D('assets/daes/auto_9.DAE'));
@@ -367,8 +367,28 @@ package elementos
 			//ObjectUtil.pr(this.main_display_object_3d.children);
 		}
 		
-		public function cambiarTextura(tex:BitmapData, tipo:String):void {
-			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTextura(tipo, new BitmapMaterial(tex));
+		public function cambiarTextura(tex:BitmapData, tipo:String):Bitmap {
+			
+			trace('Auto.cambiarTextura');
+			trace(tex);
+			trace(tipo);
+			
+			var bmpd:BitmapData;
+			var c3d:Car3D = Car3D(this.autoArray[this.tipo_auto_actual]);
+			
+			switch(tipo) {
+				case Car3D.LADO_IZQUIERDO:
+					bmpd = c3d.tex_left_bitmapdata;
+					break;
+				case Car3D.LADO_DERECHO:
+					bmpd = c3d.tex_right_bitmapdata;
+					break;
+				case Car3D.LADO_SUPERIOR:
+					bmpd = c3d.tex_top_bitmapdata;
+					break;
+			}
+			
+			return c3d.cambiarTextura(tipo+'-material', bmpd, tex);
 		}
 		
 		public function getIdElemento(tipo:String):int

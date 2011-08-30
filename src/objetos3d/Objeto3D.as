@@ -4,8 +4,14 @@ package objetos3d
 	import com.adobe.air.crypto.EncryptionKeyGenerator;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.LoaderMax;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import org.papervision3d.core.proto.MaterialObject3D;
 	import org.papervision3d.events.FileLoadEvent;
+	import org.papervision3d.materials.BitmapMaterial;
+	import org.papervision3d.materials.ColorMaterial;
+	import org.papervision3d.materials.special.CompositeMaterial;
+	import org.papervision3d.materials.WireframeMaterial;
 	import org.papervision3d.objects.DisplayObject3D;
 	import org.papervision3d.objects.parsers.DAE;
 	
@@ -50,34 +56,39 @@ package objetos3d
 			//this.dae = this.loader_max_dae.getLoader(DAE_FILE).getDae();
 			this.dae.y = -6;
 			
-			trace(this.dae.getChildByName('COLLADA_Scene').getChildByName(Car3D.LADO_IZQUIERDO));
-			
-			trace(this.dae.filename);
-			
 			this.onDaeParsedExtraSteps();
 		}
 		
-		public function cambiarTextura(objectName:String, material:MaterialObject3D):void
+		public function cambiarTextura(objectName:String, material_original:BitmapData, material_over:BitmapData):Bitmap
 		{
-			trace('Objeto3D.cambiarTextura');
-			if (this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName))
-			{
-				//this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName).material = material;
-				var target:DisplayObject3D = this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName);
-				
-				target.setChildMaterial(target, material, target.material);
-				trace(target.material);
-			}
+			trace('Objeto3D.cambiarTextura objectName: ' + objectName);
+			
+			// TODO
+			//este if, en estricto rigor no debiera hacerse, ya que los modelos seguiran un estandar de tener las mismas ID de texturas
+			//if (this.dae.getChildByName('COLLADA_Scene').getChildByName(objectName))
+			//{
+			
+			//crear copia bitmap original
+			var bmpd:BitmapData = material_original.clone();
+			
+			//pegar encima el material_over
+			bmpd.draw(material_over);
+			
+			//reemplazar
+			this.dae.replaceMaterialByName(new BitmapMaterial(bmpd), objectName);
+			
+			//devovler el bitmap generado, posiblemente para guardarlo despues
+			return new Bitmap(bmpd);
 		}
 		
 		private function setup():void
 		{
 			trace('Objeto3D.setup');
 			this.dae = new DAE();
-			
-			/*this.loader_max_dae = new LoaderMax({name: 'dae_queue', maxConnections: 3, onProgress: onLoaderMaxDaeProgress, onComplete: onLoaderMaxDaeComplete, onError: onLoaderMaxDaeError});
-			
-			this.loader_max_dae.append(new DaeLoader(this.dae_file, {name: DAE_FILE}));*/
+		
+		/*this.loader_max_dae = new LoaderMax({name: 'dae_queue', maxConnections: 3, onProgress: onLoaderMaxDaeProgress, onComplete: onLoaderMaxDaeComplete, onError: onLoaderMaxDaeError});
+		
+		 this.loader_max_dae.append(new DaeLoader(this.dae_file, {name: DAE_FILE}));*/
 		}
 		
 		private function onLoaderMaxDaeError(e:LoaderEvent):void
@@ -102,7 +113,7 @@ package objetos3d
 		
 		protected function onDaeParsedExtraSteps():void
 		{
-			trace('Objeto3D.onDaeParsed');
+			trace('Objeto3D.onDaeParsedExtraSteps');
 		}
 		
 		public function getDae():DAE

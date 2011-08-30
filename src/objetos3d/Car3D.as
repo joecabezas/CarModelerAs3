@@ -3,6 +3,8 @@ package objetos3d
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
+	import flash.display.BitmapData;
+	import org.papervision3d.core.proto.MaterialObject3D;
 	import org.papervision3d.materials.BitmapMaterial;
 	
 	/**
@@ -16,10 +18,15 @@ package objetos3d
 		public static const LADO_IZQUIERDO:String = 'auto_1_lateral_izq';
 		public static const LADO_SUPERIOR:String = 'auto_1_superior';
 		
-		//texturas
-		private var tex_right:String;
-		private var tex_left:String;
-		private var tex_top:String;
+		//texturas url
+		private var tex_right_url:String;
+		private var tex_left_url:String;
+		private var tex_top_url:String;
+		
+		//texturas en bitmapdata
+		public var tex_right_bitmapdata:BitmapData;
+		public var tex_left_bitmapdata:BitmapData;
+		public var tex_top_bitmapdata:BitmapData;
 		
 		//loader
 		private var loader_max:LoaderMax;
@@ -66,28 +73,32 @@ package objetos3d
 			switch (target)
 			{
 				case LADO_DERECHO: 
-					this.tex_right = tex;
+					this.tex_right_url = tex;
 					break;
 				case LADO_IZQUIERDO: 
-					this.tex_left = tex;
+					this.tex_left_url = tex;
 					break;
 				case LADO_SUPERIOR: 
-					this.tex_top = tex;
+					this.tex_top_url = tex;
 					break;
 			}
 			
 			//cargar texturas si se agregaron
-			if (this.tex_right)
-				this.loader_max_texs.append(new ImageLoader(this.tex_right, {name: LADO_DERECHO}));
-			if (this.tex_left)
-				this.loader_max_texs.append(new ImageLoader(this.tex_left, {name: LADO_IZQUIERDO}));
-			if (this.tex_top)
-				this.loader_max_texs.append(new ImageLoader(this.tex_top, {name: LADO_SUPERIOR}));
+			if (this.tex_right_url)
+				this.loader_max_texs.append(new ImageLoader(this.tex_right_url, {name: LADO_DERECHO}));
+			if (this.tex_left_url)
+				this.loader_max_texs.append(new ImageLoader(this.tex_left_url, {name: LADO_IZQUIERDO}));
+			if (this.tex_top_url)
+				this.loader_max_texs.append(new ImageLoader(this.tex_top_url, {name: LADO_SUPERIOR}));
 		}
 		
 		override protected function onDaeParsedExtraSteps():void {
 			trace('car3D.onDaeParsedExtraSteps');
-			//this.cambiarTexturasAuto();
+			
+			//guardar los bitmaps de los mapas originales
+			this.tex_left_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_IZQUIERDO + '-material']).bitmap;
+			this.tex_right_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_DERECHO + '-material']).bitmap;
+			this.tex_top_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_SUPERIOR + '-material']).bitmap;
 		}
 		
 		private function onTexsLoaderError(e:LoaderEvent):void
@@ -100,20 +111,20 @@ package objetos3d
 			trace('Car3D.cambiarTexturasAuto');
 			
 			
-			if (this.tex_right)
+			if (this.tex_right_url)
 			{
-				this.cambiarTextura(LADO_DERECHO, new BitmapMaterial(this.loader_max.getLoader(LADO_DERECHO).rawContent.bitmapData));
+				//this.cambiarTextura(LADO_DERECHO, new BitmapMaterial(this.loader_max.getLoader(LADO_DERECHO).rawContent.bitmapData));
 			}
 			
 			trace(this.loader_max.getLoader(LADO_IZQUIERDO));
-			if (this.tex_left)
+			if (this.tex_left_url)
 			{
-				this.cambiarTextura(LADO_IZQUIERDO, new BitmapMaterial(this.loader_max.getLoader(LADO_IZQUIERDO).rawContent.bitmapData));
+				//this.cambiarTextura(LADO_IZQUIERDO, new BitmapMaterial(this.loader_max.getLoader(LADO_IZQUIERDO).rawContent.bitmapData));
 			}
 			
-			if (this.tex_top)
+			if (this.tex_top_url)
 			{
-				this.cambiarTextura(LADO_SUPERIOR, new BitmapMaterial(this.loader_max.getLoader(LADO_SUPERIOR).rawContent.bitmapData));
+				//this.cambiarTextura(LADO_SUPERIOR, new BitmapMaterial(this.loader_max.getLoader(LADO_SUPERIOR).rawContent.bitmapData));
 			}
 		}
 		
