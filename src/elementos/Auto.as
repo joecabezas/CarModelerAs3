@@ -20,6 +20,7 @@ package elementos
 	import flash.utils.ByteArray;
 	import objetos3d.Car3D;
 	import objetos3d.Objeto3D;
+	import org.papervision3d.core.proto.MaterialObject3D;
 	import org.papervision3d.materials.BitmapMaterial;
 	import org.papervision3d.objects.DisplayObject3D;
 	import org.papervision3d.view.BasicView;
@@ -119,6 +120,10 @@ package elementos
 		
 		public function updateRotation(r:Number):void
 		{
+			//verificar que no este deshabilitado el mouse
+			if (!this.mouseEnabled)
+				return;
+			
 			this.desired_rotation += r;
 			
 			//que no sobrepase 360
@@ -136,6 +141,7 @@ package elementos
 			//this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
 			//this.autoArray.push(new Car3D('assets/daes/wv_modelado2.dae'));
 			this.autoArray.push(new Car3D('assets/daes/auto_1.DAE'));
+			this.autoArray.push(new Car3D('assets/daes/autojoe.dae'));
 			
 			//this.chasisArray.push(new Car3D('assets/daes/auto_9.DAE'));
 			//this.chasisArray.push(new Car3D('assets/daes/auto_mas_poligonos.DAE'));
@@ -166,7 +172,7 @@ package elementos
 			
 			//marco
 			s.graphics.lineStyle(3, 0x000000);
-			s.graphics.drawRect((this.main_basic_view.viewport.x),(this.main_basic_view.viewport.y), this.main_basic_view.viewport.viewportWidth, this.main_basic_view.viewport.viewportHeight);
+			s.graphics.drawRect((this.main_basic_view.viewport.x), (this.main_basic_view.viewport.y), this.main_basic_view.viewport.viewportWidth, this.main_basic_view.viewport.viewportHeight);
 			
 			s.graphics.lineStyle(2, 0xff0000);
 			
@@ -177,7 +183,7 @@ package elementos
 			s.graphics.drawCircle(centrox, centroy, 5);
 			
 			s.graphics.lineStyle(1, 0xff0000);
-			s.graphics.drawCircle(centrox, centroy, Math.min(sx,sy)/2);
+			s.graphics.drawCircle(centrox, centroy, Math.min(sx, sy) / 2);
 			
 			s.graphics.lineStyle(1, 0xff0000);
 			//lineas
@@ -209,7 +215,7 @@ package elementos
 			//setear el loader max
 			this.loader_max = new LoaderMax({name: 'main_queue', maxConnections: 3, onProgress: onLoaderMaxProgress, onComplete: onLoaderMaxComplete, onError: onLoaderMaxError});
 			
-			this.loader_max.append(new DataLoader(this.json_url, { name: JSON_LOADER, onComplete: onJsonLoaded } ));
+			this.loader_max.append(new DataLoader(this.json_url, {name: JSON_LOADER, onComplete: onJsonLoaded}));
 			
 			//configurar el basic view
 			this.main_basic_view = new BasicView();
@@ -221,7 +227,7 @@ package elementos
 			this.main_basic_view.viewport.x = 0;
 			this.main_basic_view.viewport.y = 0;
 			
-			this.main_basic_view.camera.zoom = 1*1000 / this.main_basic_view.camera.focus + 1;
+			this.main_basic_view.camera.zoom = 1 * 1000 / this.main_basic_view.camera.focus + 1;
 			this.main_basic_view.camera.y = 200;
 			
 			//configurar el main displayObject3D
@@ -284,7 +290,7 @@ package elementos
 			Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS).load();
 		}
 		
-		private function onLoadTexs(e:LoaderEvent):void 
+		private function onLoadTexs(e:LoaderEvent):void
 		{
 			trace('Auto.onLoadTexs');
 			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTexturasAuto();
@@ -296,7 +302,7 @@ package elementos
 		{
 			trace('Auto.onLoaderMaxComplete');
 			
-			this.mouse_target = this.main_basic_view.viewport;
+			this.mouse_target = this.stage;
 			this.agregarMouseListeners();
 			this.quitarLoadingBar();
 			this.dibujar();
@@ -345,7 +351,7 @@ package elementos
 			}
 		}
 		
-		private function resetCar():void 
+		private function resetCar():void
 		{
 			trace('Auto.resetCar');
 			
@@ -360,35 +366,38 @@ package elementos
 			
 			//borrar elementos main display object 3d
 			trace(this.main_display_object_3d.numChildren);
-			for each(var i:DisplayObject3D in this.main_display_object_3d.children) {
+			for each (var i:DisplayObject3D in this.main_display_object_3d.children)
+			{
 				this.main_display_object_3d.removeChild(i);
 			}
 			trace(this.main_display_object_3d.numChildren);
 			//ObjectUtil.pr(this.main_display_object_3d.children);
 		}
 		
-		public function cambiarTextura(tex:BitmapData, tipo:String):Bitmap {
+		public function cambiarTextura(tex:BitmapData, tipo:String):Bitmap
+		{
 			
 			trace('Auto.cambiarTextura');
 			trace(tex);
 			trace(tipo);
 			
-			var bmpd:BitmapData;
+			var mat:MaterialObject3D;
 			var c3d:Car3D = Car3D(this.autoArray[this.tipo_auto_actual]);
 			
-			switch(tipo) {
-				case Car3D.LADO_IZQUIERDO:
-					bmpd = c3d.tex_left_bitmapdata;
+			switch (tipo)
+			{
+				case Car3D.LADO_IZQUIERDO: 
+					mat = c3d.tex_left_material;
 					break;
-				case Car3D.LADO_DERECHO:
-					bmpd = c3d.tex_right_bitmapdata;
+				case Car3D.LADO_DERECHO: 
+					mat = c3d.tex_right_material;
 					break;
-				case Car3D.LADO_SUPERIOR:
-					bmpd = c3d.tex_top_bitmapdata;
+				case Car3D.LADO_SUPERIOR: 
+					mat = c3d.tex_top_material;
 					break;
 			}
 			
-			return c3d.cambiarTextura(tipo+'-material', bmpd, tex);
+			return c3d.cambiarTextura(tipo + '-material', mat, tex);
 		}
 		
 		public function getIdElemento(tipo:String):int
@@ -424,27 +433,27 @@ package elementos
 			this.agregarLoadingBarInfoUsuario();
 			
 			this.loader_max.getLoader(JSON_LOADER).load(true);
-			
-			/*switch(this.loader_max.getLoader(JSON_LOADER).status) {
-				case LoaderStatus.COMPLETED:
-					trace('COMPLETED');
-					break;
-				case LoaderStatus.DISPOSED:
-					trace('DISPOSED');
-					break;
-				case LoaderStatus.FAILED:
-					trace('FAILED');
-					break;
-				case LoaderStatus.LOADING:
-					trace('LOADING');
-					break;
-				case LoaderStatus.PAUSED:
-					trace('PAUSED');
-					break;
-				case LoaderStatus.READY:
-					trace('READY');
-					break;
-			}*/
+		
+		/*switch(this.loader_max.getLoader(JSON_LOADER).status) {
+		   case LoaderStatus.COMPLETED:
+		   trace('COMPLETED');
+		   break;
+		   case LoaderStatus.DISPOSED:
+		   trace('DISPOSED');
+		   break;
+		   case LoaderStatus.FAILED:
+		   trace('FAILED');
+		   break;
+		   case LoaderStatus.LOADING:
+		   trace('LOADING');
+		   break;
+		   case LoaderStatus.PAUSED:
+		   trace('PAUSED');
+		   break;
+		   case LoaderStatus.READY:
+		   trace('READY');
+		   break;
+		 }*/
 		}
 		
 		public function sendData():void
@@ -460,7 +469,7 @@ package elementos
 			//debug
 			//Tools.pr(this.config);
 			
-			var reqw:URLRequestWrapper = new URLRequestWrapper(img,{json:JSON.encode(this.config)});
+			var reqw:URLRequestWrapper = new URLRequestWrapper(img, {json: JSON.encode(this.config)});
 			//reqw.method = URLRequestMethod.POST;
 			//reqw.data = vars;
 			reqw.url = '../send.php';
@@ -470,35 +479,36 @@ package elementos
 			loader.load(reqw.request);
 		}
 		
-		public function setViewportWidth(number:Number):void 
+		public function setViewportWidth(number:Number):void
 		{
 			this.main_basic_view.viewport.viewportWidth = number;
 		}
 		
-		public function setViewportHeight(number:Number):void 
+		public function setViewportHeight(number:Number):void
 		{
 			this.main_basic_view.viewport.viewportHeight = number;
 		}
 		
-		public function mostrarLado(lado:String):void 
+		public function mostrarLado(lado:String):void
 		{
 			var anguloY:Number;
 			var anguloX:Number;
 			
-			switch(lado) {
-				case Car3D.LADO_IZQUIERDO:
+			switch (lado)
+			{
+				case Car3D.LADO_IZQUIERDO: 
 					anguloY = 0;
 					anguloX = 0;
 					break;
-				case Car3D.LADO_DERECHO:
+				case Car3D.LADO_DERECHO: 
 					anguloY = 180;
 					anguloX = 0;
 					break;
-				case Car3D.LADO_SUPERIOR:
+				case Car3D.LADO_SUPERIOR: 
 					anguloY = 0;
 					anguloX = -90;
 					break;
-				default:
+				default: 
 					anguloY = 0;
 					anguloX = 0;
 					break;
@@ -507,7 +517,7 @@ package elementos
 			//actualizar desired rotation
 			this.desired_rotation = anguloY;
 			
-			TweenLite.to(this.main_display_object_3d, 0.4, { rotationX: anguloX, rotationY:anguloY } );
+			TweenLite.to(this.main_display_object_3d, 0.4, {rotationX: anguloX, rotationY: anguloY});
 		}
 		
 		private function takeScreenshot(quality:Number = 50, screenshot_width:Number = 400, screenshot_height:Number = 300):ByteArray
@@ -583,24 +593,25 @@ package elementos
 			}
 		}
 		
-		private function agregarLoadingBarInfoUsuario():void 
+		private function agregarLoadingBarInfoUsuario():void
 		{
 			this.loading_user_data_sprite = new Sprite();
 			
 			var centerx:Number = (this.main_basic_view.viewport.x) + (this.main_basic_view.viewport.viewportWidth / 2);
 			var centery:Number = (this.main_basic_view.viewport.y) + (this.main_basic_view.viewport.viewportHeight / 2);
 			
-			this.loading_user_data_sprite.graphics.beginFill(0xffff00,0.7);
-			this.loading_user_data_sprite.graphics.drawCircle(centerx,centery,30);
+			this.loading_user_data_sprite.graphics.beginFill(0xffff00, 0.7);
+			this.loading_user_data_sprite.graphics.drawCircle(centerx, centery, 30);
 			this.loading_user_data_sprite.graphics.endFill();
 			
 			this.addChild(this.loading_user_data_sprite);
 		}
 		
-		private function quitarLoadingBarInfoUsuario():void 
+		private function quitarLoadingBarInfoUsuario():void
 		{
 			//sacar icono de cargando informacion de usuario
-			if ((this.loading_user_data_sprite) && (this.contains(this.loading_user_data_sprite))) {
+			if ((this.loading_user_data_sprite) && (this.contains(this.loading_user_data_sprite)))
+			{
 				this.removeChild(this.loading_user_data_sprite);
 			}
 		}

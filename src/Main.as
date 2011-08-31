@@ -1,6 +1,8 @@
 package
 {
+	import com.as3joelib.generators.TextFieldGenerator;
 	import com.as3joelib.joeeditor.JoeEditor;
+	import com.as3joelib.ppv3d.SimpleDAELoader;
 	import com.as3joelib.ui.UISwitcher;
 	import elementos.Auto;
 	import flash.display.Bitmap;
@@ -8,6 +10,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.text.TextField;
 	import objetos3d.Car3D;
 	/**
 	 * ...
@@ -160,9 +163,18 @@ package
 			
 			//cambiar textura al auto
 			var bmp:Bitmap = this.auto.cambiarTextura(bmpd, this.lado_que_se_esta_editando);
-			this.addChild(bmp);
 			
-			bmp.scaleX = bmp.scaleY = 0.2;
+			//debug: ver textura
+			var t:TextField = TextFieldGenerator.crearTextField('DEBUG: textura resultante:', { size:9 } );
+			
+			this.addChild(t);
+			t.x = this.stage.stageWidth - 150 - 10;
+			t.y = this.stage.stageHeight - 150 - 25;
+			
+			this.addChild(bmp);
+			bmp.width = bmp.height = 150;
+			bmp.x = this.stage.stageWidth - 150 - 10;
+			bmp.y = this.stage.stageHeight - 150 - 10;
 			
 			//hacer que el switcher me cambie al visor del auto nuevamente
 			this.switcher_main.switchTo(this.auto);
@@ -231,6 +243,8 @@ package
 			
 			this.switcher_main.hideAllItems();
 			this.switcher_main.switchTo(this.auto);
+			
+			//this.addChild(new SimpleDAELoader('assets/daes/autojoe.dae'));
 		}
 	
 	}

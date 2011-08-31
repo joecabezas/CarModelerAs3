@@ -59,7 +59,7 @@ package objetos3d
 			this.onDaeParsedExtraSteps();
 		}
 		
-		public function cambiarTextura(objectName:String, material_original:BitmapData, material_over:BitmapData):Bitmap
+		public function cambiarTextura(objectName:String, material_original:MaterialObject3D, material_over:BitmapData):Bitmap
 		{
 			trace('Objeto3D.cambiarTextura objectName: ' + objectName);
 			
@@ -69,7 +69,19 @@ package objetos3d
 			//{
 			
 			//crear copia bitmap original
-			var bmpd:BitmapData = material_original.clone();
+			var bmpd:BitmapData;
+			
+			//si es un bitmap material
+			if (material_original is BitmapMaterial) {
+				bmpd = material_original.bitmap.clone();
+			}
+			
+			//si es un color material
+			if (material_original is ColorMaterial) {
+				trace(ColorMaterial(material_original).fillColor);
+				trace(ColorMaterial(material_original).bitmap);
+				bmpd = new BitmapData(512, 512, false, ColorMaterial(material_original).fillColor);
+			}
 			
 			//pegar encima el material_over
 			bmpd.draw(material_over);

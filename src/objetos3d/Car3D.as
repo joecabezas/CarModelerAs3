@@ -24,9 +24,9 @@ package objetos3d
 		private var tex_top_url:String;
 		
 		//texturas en bitmapdata
-		public var tex_right_bitmapdata:BitmapData;
-		public var tex_left_bitmapdata:BitmapData;
-		public var tex_top_bitmapdata:BitmapData;
+		public var tex_right_material:MaterialObject3D;
+		public var tex_left_material:MaterialObject3D;
+		public var tex_top_material:MaterialObject3D;
 		
 		//loader
 		private var loader_max:LoaderMax;
@@ -96,9 +96,9 @@ package objetos3d
 			trace('car3D.onDaeParsedExtraSteps');
 			
 			//guardar los bitmaps de los mapas originales
-			this.tex_left_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_IZQUIERDO + '-material']).bitmap;
-			this.tex_right_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_DERECHO + '-material']).bitmap;
-			this.tex_top_bitmapdata =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_SUPERIOR + '-material']).bitmap;
+			this.tex_left_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_IZQUIERDO + '-material']);
+			this.tex_right_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_DERECHO + '-material']);
+			this.tex_top_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_SUPERIOR + '-material']);
 		}
 		
 		private function onTexsLoaderError(e:LoaderEvent):void
