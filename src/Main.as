@@ -2,7 +2,7 @@ package
 {
 	import com.as3joelib.generators.TextFieldGenerator;
 	import com.as3joelib.joeeditor.JoeEditor;
-	import com.as3joelib.ppv3d.SimpleDAELoader;
+	//import com.as3joelib.ppv3d.SimpleDAELoader;
 	import com.as3joelib.ui.UISwitcher;
 	import elementos.Auto;
 	import flash.display.Bitmap;
@@ -163,6 +163,9 @@ package
 			
 			//cambiar textura al auto
 			var bmp:Bitmap = this.auto.cambiarTextura(bmpd, this.lado_que_se_esta_editando);
+			
+			//restaurar la rotacion en X si es que se estaba editando la parte superior
+			this.auto.resetRotationX();
 			
 			//debug: ver textura
 			var t:TextField = TextFieldGenerator.crearTextField('DEBUG: textura resultante:', { size:9 } );

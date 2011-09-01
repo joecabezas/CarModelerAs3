@@ -100,14 +100,14 @@ package elementos
 		private function onMouseUp(e:MouseEvent):void
 		{
 			this.mouse_target.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			trace('Auto.onMouseUp');
+			//trace('Auto.onMouseUp');
 		}
 		
 		private function onMouseDown(e:MouseEvent):void
 		{
 			this.mouse_target.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			this.posInicialMouseX = this.mouseX;
-			trace('Auto.onMouseDown');
+			//trace('Auto.onMouseDown');
 		}
 		
 		private function onMouseMove(e:MouseEvent):void
@@ -141,7 +141,7 @@ package elementos
 			//this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
 			//this.autoArray.push(new Car3D('assets/daes/wv_modelado2.dae'));
 			this.autoArray.push(new Car3D('assets/daes/auto_1.DAE'));
-			this.autoArray.push(new Car3D('assets/daes/autojoe.dae'));
+			//this.autoArray.push(new Car3D('assets/daes/autojoe.dae'));
 			
 			//this.chasisArray.push(new Car3D('assets/daes/auto_9.DAE'));
 			//this.chasisArray.push(new Car3D('assets/daes/auto_mas_poligonos.DAE'));
@@ -257,7 +257,7 @@ package elementos
 			for each (o3d in this.autoArray)
 			{
 				this.loader_max.append(o3d.getLoaderMax());
-				//trace('+'+o3d.getLoaderMax().numChildren);
+					//trace('+'+o3d.getLoaderMax().numChildren);
 			}
 			
 			for each (o3d in this.spoilersArray)
@@ -334,7 +334,7 @@ package elementos
 			
 			switch (tipo)
 			{
-				case TIPO_AUTO:
+				case TIPO_AUTO: 
 					//al escoger un auto nuevo, se deben remover todos los objetos y poner el auto vacio
 					this.resetCar();
 					this.tipo_auto_actual = id;
@@ -518,6 +518,11 @@ package elementos
 			this.desired_rotation = anguloY;
 			
 			TweenLite.to(this.main_display_object_3d, 0.4, {rotationX: anguloX, rotationY: anguloY});
+		}
+		
+		public function resetRotationX():void
+		{
+			TweenLite.to(this.main_display_object_3d, 0.4, {rotationX: 0});
 		}
 		
 		private function takeScreenshot(quality:Number = 50, screenshot_width:Number = 400, screenshot_height:Number = 300):ByteArray
