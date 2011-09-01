@@ -16,7 +16,7 @@ package
 	 * ...
 	 * @author Joe Cabezas
 	 */
-	[SWF(backgroundColor="#cccccc",width=920,height=600,frameRate=60)]
+	[SWF(backgroundColor="#cccccc",width=920,height=600,frameRate="60")]
 	[Frame(factoryClass="Preloader")]
 	
 	public class Main extends Sprite
