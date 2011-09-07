@@ -5,6 +5,7 @@ package elementos
 	import com.adobe.serialization.json.JSON;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.DataLoader;
+	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.TweenLite;
 	import com.marston.utils.URLRequestWrapper;
@@ -275,7 +276,7 @@ package elementos
 			//trace(e.target.content);
 			this.config = JSON.decode(e.target.content);
 			
-			//trace(data.auto.piezas.spoilers);
+			trace(this.config.auto.texturas.left);
 			
 			//this.cambiarElemento(Auto.TIPO_AUTO, this.config.auto.piezas.auto);
 			//this.cambiarElemento(Auto.TIPO_CHASIS, this.config.auto.piezas.chasis);
@@ -293,7 +294,21 @@ package elementos
 		private function onLoadTexs(e:LoaderEvent):void
 		{
 			trace('Auto.onLoadTexs');
-			Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTexturasAuto();
+			
+			//deprecated
+			//Car3D(this.autoArray[this.tipo_auto_actual]).cambiarTexturasAuto();
+			
+			//obtener texturas cargadas
+			var bmpd_izq:BitmapData = Bitmap(ImageLoader(LoaderMax(Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).getLoader(Car3D.LADO_IZQUIERDO)).rawContent).bitmapData;
+			var bmpd_der:BitmapData = Bitmap(ImageLoader(LoaderMax(Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).getLoader(Car3D.LADO_DERECHO)).rawContent).bitmapData;
+			var bmpd_top:BitmapData = Bitmap(ImageLoader(LoaderMax(Car3D(this.autoArray[this.tipo_auto_actual]).getLoaderMax().getLoader(Car3D.LOADER_MAX_TEXS)).getLoader(Car3D.LADO_SUPERIOR)).rawContent).bitmapData;
+			
+			this.cambiarTextura(bmpd_izq, Car3D.LADO_IZQUIERDO);
+			this.cambiarTextura(bmpd_der, Car3D.LADO_DERECHO);
+			this.cambiarTextura(bmpd_top, Car3D.LADO_SUPERIOR);
+			
+			//hacer que estas nuevas texturas sean default
+			Car3D(this.autoArray[this.tipo_auto_actual]).updateDefaultMaterials();
 			
 			this.quitarLoadingBarInfoUsuario();
 		}
@@ -397,7 +412,7 @@ package elementos
 					break;
 			}
 			
-			return c3d.cambiarTextura(tipo + '-material', mat, tex);
+			return  c3d.cambiarTextura(tipo + '-material', mat, tex);
 		}
 		
 		public function getIdElemento(tipo:String):int
@@ -420,6 +435,7 @@ package elementos
 		
 		public function setJsonUrl(string:String):void
 		{
+			trace('Auto.setJsonUrl');
 			trace(string);
 			this.json_url = string;
 			this.loader_max.getLoader(JSON_LOADER).url = this.json_url;
@@ -463,19 +479,34 @@ package elementos
 			//setear config con las config actuales
 			this.updateConfig();
 			
-			//sacar imagen del auto e incluirla en los datos a enviar
-			var img:ByteArray = this.takeScreenshot();
+			//sacar screenshot del auto e incluirla en los datos a enviar
+			var ba_screenshot:ByteArray = this.takeScreenshot();
 			
-			//debug
-			//Tools.pr(this.config);
+			//texturas
+			var je_izq:JPGEncoder = new JPGEncoder();
+			var ba_textura_izq:ByteArray = je_izq.encode(MaterialObject3D(Car3D(this.autoArray[this.tipo_auto_actual]).getActualMaterial(Car3D.LADO_IZQUIERDO)).bitmap);
 			
-			var reqw:URLRequestWrapper = new URLRequestWrapper(img, {json: JSON.encode(this.config)});
+			var je_der:JPGEncoder = new JPGEncoder();
+			var ba_textura_der:ByteArray = je_der.encode(MaterialObject3D(Car3D(this.autoArray[this.tipo_auto_actual]).getActualMaterial(Car3D.LADO_DERECHO)).bitmap);
+			
+			var je_top:JPGEncoder = new JPGEncoder();
+			var ba_textura_top:ByteArray = je_top.encode(MaterialObject3D(Car3D(this.autoArray[this.tipo_auto_actual]).getActualMaterial(Car3D.LADO_SUPERIOR)).bitmap);
+			
+			//crear array de los byteArrays de las texturas
+			var bav:Vector.<ByteArray> = new Vector.<ByteArray>;
+			
+			bav.push(ba_screenshot);
+			bav.push(ba_textura_izq);
+			bav.push(ba_textura_der);
+			bav.push(ba_textura_top);
+			
+			var reqw:URLRequestWrapper = new URLRequestWrapper(bav, {json: JSON.encode(this.config)});
 			//reqw.method = URLRequestMethod.POST;
 			//reqw.data = vars;
 			reqw.url = '../send.php';
 			
 			var loader:URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE, onSendJson);
+			loader.addEventListener(Event.COMPLETE, onSendData);
 			loader.load(reqw.request);
 		}
 		
@@ -530,29 +561,23 @@ package elementos
 			var jpgSource:BitmapData = new BitmapData(this.main_basic_view.width, this.main_basic_view.height);
 			jpgSource.draw(this.main_basic_view.viewport);
 			
-			//debug
 			var bmp:Bitmap = new Bitmap(jpgSource);
 			
 			var sx:int = screenshot_width;
 			var sy:int = screenshot_height;
 			
 			bmp.scrollRect = new Rectangle((this.main_basic_view.viewport.viewportWidth / 2) - (sx / 2), (this.main_basic_view.viewport.viewportHeight / 2) - (sy / 2), sx, sy);
-			this.addChild(bmp);
 			
-			bmp.x = 20;
-			bmp.y = 20;
+			//final bitmapdata
+			var final_bmpd:BitmapData = new BitmapData(screenshot_width, screenshot_height);
+			final_bmpd.draw(bmp);
 			
-			//marco
-			var s:Sprite = new Sprite();
-			s.graphics.lineStyle(5);
-			s.graphics.drawRect(bmp.x, bmp.y, bmp.width, 300);
-			this.addChild(s);
-			
-			//end debug
+			//debug
+			//var bmpt:Bitmap = new Bitmap(final_bmpd);
+			//this.addChild(bmpt);
 			
 			var jpgEncoder:JPGEncoder = new JPGEncoder(quality);
-			
-			return jpgEncoder.encode(jpgSource);
+			return jpgEncoder.encode(final_bmpd);
 		}
 		
 		private function updateConfig():void
@@ -572,7 +597,7 @@ package elementos
 			//this.config.auto.texturas.top = ;
 		}
 		
-		private function onSendJson(e:DataEvent):void
+		private function onSendData(e:DataEvent):void
 		{
 		
 		}

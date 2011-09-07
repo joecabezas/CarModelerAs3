@@ -37,7 +37,7 @@ package
 		
 		//switchers
 		private var switcher_main:UISwitcher;
-		private var switcher_editores:UISwitcher;
+		//private var switcher_editores:UISwitcher;
 		
 		public function Main():void
 		{
@@ -65,7 +65,7 @@ package
 		{
 			this.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
-			//this.auto.addEventListener(Auto.EVENT_LOAD_COMPLETE, onAutoLoaded);
+			this.auto.addEventListener(Auto.EVENT_LOAD_COMPLETE, onAutoLoaded);
 		}
 		
 		private function onAutoLoaded(e:Event):void 
@@ -223,9 +223,9 @@ package
 			this.switcher_main.animation_in_object = {duration:0.3, alpha:1}
 			this.switcher_main.animation_out_object = { duration:0.3, alpha:0 }
 			
-			this.switcher_editores = new UISwitcher();
-			this.switcher_editores.animation_in_object = {duration:0, alpha:1}
-			this.switcher_editores.animation_out_object = {duration:0, alpha:0}
+			//this.switcher_editores = new UISwitcher();
+			//this.switcher_editores.animation_in_object = {duration:0, alpha:1}
+			//this.switcher_editores.animation_out_object = {duration:0, alpha:0}
 			
 			//ei
 			//this.ei = new ExternalInterfaceExample();
