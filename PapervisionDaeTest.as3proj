@@ -24,7 +24,6 @@
     <class path="..\libs\transformtool" />
     <class path="..\libs\minimalcomps\src" />
     <class path="..\libs\as3corelib\src" />
-    <class path="..\libs\marston" />
   </classpaths>
   <!-- Build options -->
   <build>
