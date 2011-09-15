@@ -140,6 +140,7 @@ package elementos
 			//car.setTex('images/grass.png', Car3D.LADO_SUPERIOR);
 			//this.autoArray.push(new Car3D('assets/daes/auto_1_piso40segs.DAE'));
 			//this.autoArray.push(new Car3D('assets/daes/wv_modelado2.dae'));
+			this.autoArray.push(new Car3D('assets/daes/modelo.dae'));
 			this.autoArray.push(new Car3D('assets/daes/auto_1.DAE'));
 			//this.autoArray.push(new Car3D('assets/daes/autojoe.dae'));
 			
