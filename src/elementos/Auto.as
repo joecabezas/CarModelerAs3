@@ -8,7 +8,6 @@ package elementos
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.TweenLite;
-	import com.marston.utils.URLRequestWrapper;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -229,7 +228,7 @@ package elementos
 			this.main_basic_view.viewport.x = 0;
 			this.main_basic_view.viewport.y = 0;
 			
-			this.main_basic_view.camera.zoom = 1 * 1000 / this.main_basic_view.camera.focus + 1;
+			this.main_basic_view.camera.zoom = 21 * 1000 / this.main_basic_view.camera.focus + 1;
 			this.main_basic_view.camera.y = 200;
 			
 			//configurar el main displayObject3D
@@ -501,14 +500,14 @@ package elementos
 			bav.push(ba_textura_der);
 			bav.push(ba_textura_top);
 			
-			var reqw:URLRequestWrapper = new URLRequestWrapper(bav, {json: JSON.encode(this.config)});
-			//reqw.method = URLRequestMethod.POST;
-			//reqw.data = vars;
-			reqw.url = '../send.php';
+			//TODO: hacer push de las librerias as3 joelibs en el pc de carlos
+			//var reqw:URLRequestWrapper = new URLRequestWrapper(bav, {json: JSON.encode(this.config)});
+			
+			//reqw.url = '../send.php';
 			
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onSendData);
-			loader.load(reqw.request);
+			//loader.load(reqw.request);
 		}
 		
 		public function setViewportWidth(number:Number):void

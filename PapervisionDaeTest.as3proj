@@ -16,7 +16,6 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="lib" />
     <class path="..\AS3DrawBoard\src" />
     <class path="..\libs\as3joelib" />
     <class path="..\libs\swc" />
@@ -63,8 +62,8 @@
     <element path="lib\porcentaje.swc" />
     <element path="lib\MonsterDebugger.swc" />
     <element path="..\libs\swc\greensock.swc" />
-    <element path="..\libs\coordy-0.9.9\swc\coordy.swc" />
     <element path="..\libs\swc\Papervision3D_2.1.932.swc" />
+    <element path="..\libs\coordy-0.9.9\swc\coordy.swc" />
     <element path="..\libs\swc\porcentaje.swc" />
   </libraryPaths>
   <!-- External Libraries -->

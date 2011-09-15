@@ -214,9 +214,9 @@ package
 			this.auto.setViewportHeight(this.stage.stageHeight);
 			
 			//editores
-			this.editor_lado_izquierdo = new JoeEditor();
-			this.editor_lado_derecho = new JoeEditor();
-			this.editor_lado_superior = new JoeEditor();
+			this.editor_lado_izquierdo = new JoeEditor('data/stickers.json');
+			this.editor_lado_derecho = new JoeEditor('data/stickers.json');
+			this.editor_lado_superior = new JoeEditor('data/stickers.json');
 			
 			//switchers
 			this.switcher_main = new UISwitcher();
