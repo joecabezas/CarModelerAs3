@@ -74,31 +74,39 @@ package objetos3d
 			{
 				case LADO_DERECHO: 
 					this.tex_right_url = tex;
+					this.loader_max_texs.append(new ImageLoader(this.tex_right_url, {name: LADO_DERECHO}));
 					break;
 				case LADO_IZQUIERDO: 
 					this.tex_left_url = tex;
+					this.loader_max_texs.append(new ImageLoader(this.tex_left_url, {name: LADO_IZQUIERDO}));
 					break;
 				case LADO_SUPERIOR: 
 					this.tex_top_url = tex;
+					this.loader_max_texs.append(new ImageLoader(this.tex_top_url, {name: LADO_SUPERIOR}));
 					break;
 			}
 			
 			//cargar texturas si se agregaron
-			if (this.tex_right_url)
-				this.loader_max_texs.append(new ImageLoader(this.tex_right_url, {name: LADO_DERECHO}));
-			if (this.tex_left_url)
-				this.loader_max_texs.append(new ImageLoader(this.tex_left_url, {name: LADO_IZQUIERDO}));
-			if (this.tex_top_url)
-				this.loader_max_texs.append(new ImageLoader(this.tex_top_url, {name: LADO_SUPERIOR}));
+			//if (this.tex_right_url)
+			//if (this.tex_left_url)
+			//if (this.tex_top_url)
 		}
 		
 		override protected function onDaeParsedExtraSteps():void {
 			trace('car3D.onDaeParsedExtraSteps');
 			
 			//guardar los bitmaps de los mapas originales
+			this.updateDefaultMaterials();
+		}
+		
+		public function updateDefaultMaterials():void {
 			this.tex_left_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_IZQUIERDO + '-material']);
 			this.tex_right_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_DERECHO + '-material']);
 			this.tex_top_material =  MaterialObject3D(this.getDae().materials.materialsByName[LADO_SUPERIOR + '-material']);
+		}
+		
+		public function getActualMaterial(lado:String):MaterialObject3D {
+			return this.getDae().materials.materialsByName[lado + '-material'];
 		}
 		
 		private function onTexsLoaderError(e:LoaderEvent):void
@@ -106,27 +114,27 @@ package objetos3d
 		
 		}
 		
-		public function cambiarTexturasAuto():void
+		/*public function cambiarTexturasAuto():void
 		{
 			trace('Car3D.cambiarTexturasAuto');
 			
 			
 			if (this.tex_right_url)
 			{
-				//this.cambiarTextura(LADO_DERECHO, new BitmapMaterial(this.loader_max.getLoader(LADO_DERECHO).rawContent.bitmapData));
+				this.cambiarTextura(LADO_DERECHO, new BitmapMaterial(this.loader_max.getLoader(LADO_DERECHO).rawContent.bitmapData),);
 			}
 			
 			trace(this.loader_max.getLoader(LADO_IZQUIERDO));
 			if (this.tex_left_url)
 			{
-				//this.cambiarTextura(LADO_IZQUIERDO, new BitmapMaterial(this.loader_max.getLoader(LADO_IZQUIERDO).rawContent.bitmapData));
+				this.cambiarTextura(LADO_IZQUIERDO, new BitmapMaterial(this.loader_max.getLoader(LADO_IZQUIERDO).rawContent.bitmapData));
 			}
 			
 			if (this.tex_top_url)
 			{
-				//this.cambiarTextura(LADO_SUPERIOR, new BitmapMaterial(this.loader_max.getLoader(LADO_SUPERIOR).rawContent.bitmapData));
+				this.cambiarTextura(LADO_SUPERIOR, new BitmapMaterial(this.loader_max.getLoader(LADO_SUPERIOR).rawContent.bitmapData));
 			}
-		}
+		}*/
 		
 		private function onLoaderProgress(e:LoaderEvent):void
 		{
